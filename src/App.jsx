@@ -25,7 +25,7 @@ function App(props) {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        {/* <Route path='/about' element={<About />} />
+        <Route path='/about' element={<About />} />
         <Route path='/shop' element={<Shop />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/services' element={<Services />} />
@@ -34,7 +34,7 @@ function App(props) {
         <Route path='/thank' element={<Thankyou />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} /> */}
+        <Route path='/register' element={<Register />} />
 
     </Routes>
       {/* <Routes>
