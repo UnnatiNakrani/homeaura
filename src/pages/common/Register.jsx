@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function Register(props) {
 
@@ -23,19 +24,30 @@ function Register(props) {
             mobile: "",
             address: "",
             password: "",
-            confirmpassword: ""
+            confirmPassword: ""
         },
         validationSchema,
-        onSubmit: (values, { resetForm }) => {
-            const newuser = {
-                ...values,
-                createdAt: new Date().toLocaleString(),
-                updatedAt: new Date().toLocaleString(),
-                isDeleted: false
-            };
-            setUser([...user, newuser]);
-            resetForm();
-            console.log(newuser);
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                const newuser = {
+                    ...values,
+                    createdAt: new Date().toLocaleString(),
+                    updatedAt: new Date().toLocaleString(),
+                    isDeleted: false
+                };
+
+                console.log("User Created");
+
+                alert("Registeration successful")
+
+                resetForm();
+
+            } catch (error) {
+                console.log(error);
+
+                alert(error.message);
+
+            }
         }
 
     })
@@ -89,11 +101,10 @@ function Register(props) {
                                                         name="fname"
                                                         value={values.fname}
                                                         onChange={handleChange}
-                                                        className={`form-control ${
-                                                            errors.fname
+                                                        className={`form-control ${errors.fname
                                                                 ? "is-invalid"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         placeholder="First Name"
                                                     />
                                                 </div>
@@ -115,11 +126,10 @@ function Register(props) {
                                                         name="lname"
                                                         value={values.lname}
                                                         onChange={handleChange}
-                                                        className={`form-control ${
-                                                            errors.lname
+                                                        className={`form-control ${errors.lname
                                                                 ? "is-invalid"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         placeholder="Last Name"
                                                     />
                                                 </div>
@@ -142,11 +152,10 @@ function Register(props) {
                                                     name="email"
                                                     value={values.email}
                                                     onChange={handleChange}
-                                                    className={`form-control ${
-                                                        errors.email
+                                                    className={`form-control ${errors.email
                                                             ? "is-invalid"
                                                             : ""
-                                                    }`}
+                                                        }`}
                                                     placeholder="Email Address"
                                                 />
                                             </div>
@@ -168,11 +177,10 @@ function Register(props) {
                                                     name="mobile"
                                                     value={values.mobile}
                                                     onChange={handleChange}
-                                                    className={`form-control ${
-                                                        errors.mobile
+                                                    className={`form-control ${errors.mobile
                                                             ? "is-invalid"
                                                             : ""
-                                                    }`}
+                                                        }`}
                                                     placeholder="Phone Number"
                                                 />
                                             </div>
@@ -195,11 +203,10 @@ function Register(props) {
                                                         name="password"
                                                         value={values.password}
                                                         onChange={handleChange}
-                                                        className={`form-control ${
-                                                            errors.password
+                                                        className={`form-control ${errors.password
                                                                 ? "is-invalid"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         placeholder="Password"
                                                     />
                                                 </div>
@@ -221,11 +228,10 @@ function Register(props) {
                                                         name="password"
                                                         value={values.confirmPassword}
                                                         onChange={handleChange}
-                                                        className={`form-control ${
-                                                            errors.confirmPassword
+                                                        className={`form-control ${errors.confirmPassword
                                                                 ? "is-invalid"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         placeholder="Confirm Password"
                                                     />
                                                 </div>

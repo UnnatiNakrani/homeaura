@@ -4,7 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 function Home(props) {
     return (
-        <>
+        <div>
             {/* Start Header/Navigation */}
             <nav className="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
                 <div className="container">
@@ -365,12 +365,7 @@ function Home(props) {
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="subscription-form">
-                                <h3 className="d-flex align-items-center">
-                                    <span className="me-1">
-                                        <img src="../assets/images/envelope-outline.svg" alt="Image" className="img-fluid" />
-                                    </span>
-                                    <span>Subscribe to Newsletter</span>
-                                </h3>
+                                <h3 className="d-flex align-items-center"><span className="me-1"><img src="../assets/images/envelope-outline.svg" alt="Image" className="img-fluid" /></span><span>Subscribe to Newsletter</span></h3>
                                 <form action="#" className="row g-3">
                                     <div className="col-auto">
                                         <input type="text" className="form-control" placeholder="Enter your name" />
@@ -392,7 +387,7 @@ function Home(props) {
                             <div className="mb-4 footer-logo-wrap"><Link to="#" className="footer-logo">Furni<span>.</span></Link></div>
                             <p className="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
                             <ul className="list-unstyled custom-social">
-                                <li><Link to="#"><i class="fa-brands fa-facebook-f"></i></Link></li>
+                                <li><Link to="#"><span className="fa fa-brands fa-facebook-f" /></Link></li>
                                 <li><Link to="#"><span className="fa fa-brands fa-twitter" /></Link></li>
                                 <li><Link to="#"><span className="fa fa-brands fa-instagram" /></Link></li>
                                 <li><Link to="#"><span className="fa fa-brands fa-linkedin" /></Link></li>
@@ -450,7 +445,8 @@ function Home(props) {
                 </div>
             </footer>
             {/* End Footer Section */}
-        </>
+        </div>
+
     );
 }
 
