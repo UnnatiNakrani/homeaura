@@ -1,11 +1,7 @@
 import React from 'react';
 
-function PublicRoute(props) {
-    return (
-        <div>
-            
-        </div>
-    );
-}
+function PublicRoute() {
+    const isLoggedIn = 
+};
 
 export default PublicRoute;
