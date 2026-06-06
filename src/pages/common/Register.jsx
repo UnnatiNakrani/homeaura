@@ -2,6 +2,10 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from '../../firebase';
+import { Link } from 'react-router-dom';
+import Login from './Login';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 function Register(props) {
 
@@ -13,7 +17,7 @@ function Register(props) {
         email: Yup.string().email("Invalid email").required("Email is required"),
         mobile: Yup.string().required("Mobile number is required").matches(/^[6-9]\d{9}$/, "Enter a valid Indian mobile number"),
         password: Yup.string().min(5, "Minimum 5 characters").required("Password is required"),
-        confirmPassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match").required("Confirm password is required")
+        confirmpassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match").required("Confirm password is required")
     });
 
     const formik = useFormik({
@@ -24,33 +28,58 @@ function Register(props) {
             mobile: "",
             address: "",
             password: "",
-            confirmPassword: ""
+            confirmpassword: ""
         },
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
             try {
-                const newuser = {
+                // Create user in Firebase Auth
+                const res = await createUserWithEmailAndPassword(
+                    auth,
+                    values.email,
+                    values.password
+                );
+
+                console.log(res, "res");
+
+                const payload = {
                     ...values,
+                    uid: res.user.uid,
                     createdAt: new Date().toLocaleString(),
                     updatedAt: new Date().toLocaleString(),
                     isDeleted: false
-                };
+                }
+                console.log(payload, "payload");
 
-                console.log("User Created");
+                const addUser = await addDoc(collection(db, "user"),payload)
+
+                console.log(addUser, "add user");
+                
 
                 alert("Registeration successful")
-
                 resetForm();
 
             } catch (error) {
-                console.log(error);
-
-                alert(error.message);
-
+                // console.log(error);
+                // switch (error.code) {
+                //     case "auth/email-already-in-use":
+                //         alert("Email already registered");
+                //         break;
+                //     case "auth/invalid-email":
+                //         alert("Invalid email address");
+                //         break;
+                //     case "auth/weak-password":
+                //         alert("Password should be at least 5 characters");
+                //         break;
+                //     default:
+                // alert(error.message);
+                console.log(error, 'eeeeee');
+                
             }
-        }
 
+        }
     })
+
 
     const { handleSubmit, handleChange, values, errors } = formik;
 
@@ -66,47 +95,23 @@ function Register(props) {
                                     <div>
                                         <h1>Furni.</h1>
                                         <p>
-                                            Create your account and explore
-                                            modern furniture collections with a
-                                            beautiful shopping experience.
+                                            Create your account and explore modern furniture collections with a beautiful shopping experience.
                                         </p>
                                     </div>
-
-                                    <img
-                                        src="../assets/images/couch.png"
-                                        alt="Furniture"
-                                        className="img-fluid"
-                                    />
+                                    <img src="../assets/images/couch.png" alt="Furniture Image" />
                                 </div>
-
                                 {/* Right Side */}
                                 <div className="col-lg-6 right-side">
-                                    <h2 className="register-title">
-                                        Create Account
-                                    </h2>
-                                    <p className="register-subtitle">
-                                        Join with Furni today
-                                    </p>
-
+                                    <h2 className="register-title">Create Account</h2>
+                                    <p className="register-subtitle">Join with Furni today</p>
                                     <form onSubmit={handleSubmit}>
                                         <div className="row">
-                                            {/* First Name */}
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-6 mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text">
-                                                        <i className="bi bi-person"></i>
+                                                        <i className="bi bi-person" />
                                                     </span>
-                                                    <input
-                                                        type="text"
-                                                        name="fname"
-                                                        value={values.fname}
-                                                        onChange={handleChange}
-                                                        className={`form-control ${errors.fname
-                                                                ? "is-invalid"
-                                                                : ""
-                                                            }`}
-                                                        placeholder="First Name"
-                                                    />
+                                                    <input onChange={handleChange} value={values.fname} name='fname' type="text" className="form-control" placeholder="First Name" />
                                                 </div>
                                                 {errors.fname && (
                                                     <div className="text-danger mt-1">
@@ -114,24 +119,12 @@ function Register(props) {
                                                     </div>
                                                 )}
                                             </div>
-
-                                            {/* Last Name */}
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-6 mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text">
-                                                        <i className="bi bi-person"></i>
+                                                        <i className="bi bi-person" />
                                                     </span>
-                                                    <input
-                                                        type="text"
-                                                        name="lname"
-                                                        value={values.lname}
-                                                        onChange={handleChange}
-                                                        className={`form-control ${errors.lname
-                                                                ? "is-invalid"
-                                                                : ""
-                                                            }`}
-                                                        placeholder="Last Name"
-                                                    />
+                                                    <input onChange={handleChange} value={values.lname} name='lname' type="text" className="form-control" placeholder="Last Name" />
                                                 </div>
                                                 {errors.lname && (
                                                     <div className="text-danger mt-1">
@@ -140,24 +133,12 @@ function Register(props) {
                                                 )}
                                             </div>
                                         </div>
-
-                                        {/* Email */}
-                                        <div className="mb-3">
+                                        <div className="mb-4">
                                             <div className="input-group">
                                                 <span className="input-group-text">
-                                                    <i className="bi bi-envelope"></i>
+                                                    <i className="bi bi-envelope" />
                                                 </span>
-                                                <input
-                                                    type="email"
-                                                    name="email"
-                                                    value={values.email}
-                                                    onChange={handleChange}
-                                                    className={`form-control ${errors.email
-                                                            ? "is-invalid"
-                                                            : ""
-                                                        }`}
-                                                    placeholder="Email Address"
-                                                />
+                                                <input onChange={handleChange} value={values.email} name='email' type="email" className="form-control" placeholder="Email Address" />
                                             </div>
                                             {errors.email && (
                                                 <div className="text-danger mt-1">
@@ -165,24 +146,12 @@ function Register(props) {
                                                 </div>
                                             )}
                                         </div>
-
-                                        {/* Mobile */}
-                                        <div className="mb-3">
+                                        <div className="mb-4">
                                             <div className="input-group">
                                                 <span className="input-group-text">
-                                                    <i className="bi bi-telephone"></i>
+                                                    <i className="bi bi-telephone" />
                                                 </span>
-                                                <input
-                                                    type="text"
-                                                    name="mobile"
-                                                    value={values.mobile}
-                                                    onChange={handleChange}
-                                                    className={`form-control ${errors.mobile
-                                                            ? "is-invalid"
-                                                            : ""
-                                                        }`}
-                                                    placeholder="Phone Number"
-                                                />
+                                                <input onChange={handleChange} value={values.mobile} name='mobile' type="text" className="form-control" placeholder="Phone Number" />
                                             </div>
                                             {errors.mobile && (
                                                 <div className="text-danger mt-1">
@@ -190,25 +159,13 @@ function Register(props) {
                                                 </div>
                                             )}
                                         </div>
-
                                         <div className="row">
-                                            {/* Password */}
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-6 mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text">
-                                                        <i className="bi bi-lock"></i>
+                                                        <i className="bi bi-lock" />
                                                     </span>
-                                                    <input
-                                                        type="password"
-                                                        name="password"
-                                                        value={values.password}
-                                                        onChange={handleChange}
-                                                        className={`form-control ${errors.password
-                                                                ? "is-invalid"
-                                                                : ""
-                                                            }`}
-                                                        placeholder="Password"
-                                                    />
+                                                    <input onChange={handleChange} value={values.password} name='password' type="password" className="form-control" placeholder="Password" />
                                                 </div>
                                                 {errors.password && (
                                                     <div className="text-danger mt-1">
@@ -216,86 +173,47 @@ function Register(props) {
                                                     </div>
                                                 )}
                                             </div>
-
-                                            {/* Confirm Password */}
-                                            <div className="col-md-6 mb-3">
+                                            <div className="col-md-6 mb-4">
                                                 <div className="input-group">
                                                     <span className="input-group-text">
-                                                        <i className="bi bi-lock"></i>
+                                                        <i className="bi bi-shield-lock" />
                                                     </span>
-                                                    <input
-                                                        type="password"
-                                                        name="password"
-                                                        value={values.confirmPassword}
-                                                        onChange={handleChange}
-                                                        className={`form-control ${errors.confirmPassword
-                                                                ? "is-invalid"
-                                                                : ""
-                                                            }`}
-                                                        placeholder="Confirm Password"
-                                                    />
+                                                    <input onChange={handleChange} value={values.confirmpassword} name='confirmpassword' type="password" className="form-control" placeholder="Confirm Password" />
                                                 </div>
-                                                {errors.confirmPassword && (
+                                                {errors.confirmpassword && (
                                                     <div className="text-danger mt-1">
-                                                        {errors.confirmPassword}
+                                                        {errors.confirmpassword}
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
-
                                         <div className="form-check mb-4">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                id="terms"
-                                            />
-                                            <label
-                                                className="form-check-label"
-                                                htmlFor="terms"
-                                            >
-                                                I agree to the Terms &
-                                                Conditions
+                                            <input onChange={handleChange} value={values} className="form-check-input" type="checkbox" id="terms" />
+                                            <label className="form-check-label" htmlFor="terms">
+                                                I agree to the Terms &amp; Conditions
                                             </label>
                                         </div>
-
-                                        <button
-                                            type="submit"
-                                            className="btn register-btn w-100 mb-4"
-                                        >
+                                        <button type="submit" className="btn register-btn w-100 mb-4">
                                             Create Account
                                         </button>
-
                                         <div className="text-center mb-3 text-muted">
                                             Or Sign Up With
                                         </div>
-
                                         <div className="row g-3">
                                             <div className="col-6">
-                                                <button
-                                                    type="button"
-                                                    className="btn social-btn w-100"
-                                                >
-                                                    <i className="bi bi-google"></i>{" "}
-                                                    Google
+                                                <button type="button" className="btn social-btn w-100">
+                                                    <i className="bi bi-google" /> Google
                                                 </button>
                                             </div>
-
                                             <div className="col-6">
-                                                <button
-                                                    type="button"
-                                                    className="btn social-btn w-100"
-                                                >
-                                                    <i className="bi bi-facebook"></i>{" "}
-                                                    Facebook
+                                                <button type="button" className="btn social-btn w-100">
+                                                    <i className="bi bi-facebook" /> Facebook
                                                 </button>
                                             </div>
                                         </div>
-
-                                        <div className="login-link mt-4 text-center">
+                                        <div className="login-link">
                                             Already have an account?
-                                            <a href="#" className="ms-1">
-                                                Login
-                                            </a>
+                                            {/* <Link to={ <Login />}>Login</Link> */}
                                         </div>
                                     </form>
                                 </div>
@@ -305,6 +223,7 @@ function Register(props) {
                 </div>
             </div>
         </section>
+
     );
 }
 

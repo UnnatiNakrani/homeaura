@@ -1,8 +1,13 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import { auth, db } from '../../firebase';
+import { useNavigate } from 'react-router-dom';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 
 function Login(props) {
+    const Navigate = useNavigate();
 
     const [user, setUser] = useState([]);
 
@@ -16,16 +21,48 @@ function Login(props) {
             password: ""
         },
         validationSchema,
-        onSubmit: (values) => {
-            const newuser = {
-                ...values,
-                createdAt: new Date().toLocaleString(),
-                updatedAt: new Date().toLocaleString(),
-                isDeleted: false
-            };
-            setUser([...user, newuser]);
-            console.log(newuser);
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                const res = await signInWithEmailAndPassword(
+                    auth,
+                    values.email,
+                    values.password
+                )
 
+                console.log(res.user.uid,"uid");
+
+                const getuser = await getDocs(collection(db, "user"));                
+                console.log(getuser, "sdasda");
+
+                const userMap = getuser.docs.map((doc) => (
+                    {
+                        id: doc.id,
+                        ...doc.data()
+                    }
+                ));
+
+                const loginUser = userMap.find(
+                    (user) => user.uid === res.user.uid
+                );
+
+                console.log(loginUser,"loginnnnn")
+
+                localStorage.setItem("user", JSON.stringify(loginUser))
+                
+                Navigate("/")
+
+            } catch (error) {
+                console.log(error);
+
+            }
+            // const newuser = {
+            //     ...values,
+            //     createdAt: new Date().toLocaleString(),
+            //     updatedAt: new Date().toLocaleString(),
+            //     isDeleted: false
+            // };
+            // setUser([...user, newuser]);
+            // console.log(newuser);
         }
     })
 

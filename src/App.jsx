@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// import '../public/assets/css/style.css'
 // import PublicRoute from './rotues/PublicRoute';
 // import Login from './pages/common/Login';
 // import Register from './pages/common/Register';
@@ -31,7 +32,7 @@ function App(props) {
         <Route path='/services' element={<Services />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/thank' element={<Thankyou />} />
+        <Route path='/thankyou' element={<Thankyou />} />
         <Route path='/checkout' element={<Checkout />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
