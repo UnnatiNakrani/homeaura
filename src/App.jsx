@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import PublicRoute from './rotues/PublicRoute';
 import Login from './pages/common/Login';
 import Register from './pages/common/Register';
@@ -17,6 +18,8 @@ import Shop from './pages/user/Shop';
 import Services from './pages/user/Services';
 import Blog from './pages/user/Blog';
 import Contact from './pages/user/Contact';
+import Cart from './pages/user/Cart';
+import Thankyou from './pages/user/Thankyou';
 
 function App(props) {
   useEffect(() => {
@@ -40,6 +43,8 @@ function App(props) {
         <Route path={USER_ROUTE.SERVICES} element={<Services />}/>
         <Route path={USER_ROUTE.BLOG} element={<Blog />}/>
         <Route path={USER_ROUTE.CONTACTUS} element={<Contact />}/>
+        <Route path={USER_ROUTE.CART} element={<Cart />}/>
+        <Route path={USER_ROUTE.THANKYOU} element={<Thankyou />}/>
         {/* <Footer /> */}
       </Route>
 

@@ -8,9 +8,11 @@ export const USER_ROUTE = {
     HOME: "/",
     SHOP: "/shop",
     ABOUTUS: "/about",
-    SERVICES: "/service",
+    SERVICES: "/services",
     BLOG: "/blog",
-    CONTACTUS: "/contact"
+    CONTACTUS: "/contact",
+    CART: "/cart",
+    THANKYOU: "/thankyou"
 }
 
 export const ADMIN_ROUTE ={

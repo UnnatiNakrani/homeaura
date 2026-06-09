@@ -7,14 +7,27 @@
   <title>Document</title>
 
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../public/assets/css/tiny-slider.css">
+  <link rel="stylesheet" href="./assets/css/tiny-slider.css">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body id="root">
 
   <script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/custom.js"></script>
+  <script src="./assets/js/tiny-slider.js"></script>
+  <script src="./assets/js/custom.js"></script>
+
+  <script>
+    var slider = tns({
+      container: '.testimonial-slider',
+      items: 1,
+      slideBy: 1,
+      autoplay: true,
+      controlsContainer: '#testimonial-nav',
+      nav: true,
+      autoplayButtonOutput: true
+    });
+  </script>
 </body>
 
 </html>

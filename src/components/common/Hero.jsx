@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import CustomButton from "./CustomButton";
 
 function Hero({
     title,
@@ -17,10 +18,7 @@ function Hero({
                     <div className="col-lg-5">
                         <div className="intro-excerpt">
                             <h1>
-                                {title}{" "}
-                                <span className="d-block">
-                                    {subtitle}
-                                </span>
+                                {title} <span className="d-block">{subtitle}</span>
                             </h1>
 
                             <p className="mb-4">
@@ -28,19 +26,17 @@ function Hero({
                             </p>
 
                             <p>
-                                <Link
+                                <CustomButton
                                     to={primaryBtnLink}
+                                    title={primaryBtnText}
                                     className="btn btn-secondary me-2"
-                                >
-                                    {primaryBtnText}
-                                </Link>
+                                />
 
-                                <Link
+                                <CustomButton
                                     to={secondaryBtnLink}
+                                    title={secondaryBtnText}
                                     className="btn btn-white-outline"
-                                >
-                                    {secondaryBtnText}
-                                </Link>
+                                />
                             </p>
                         </div>
                     </div>
@@ -49,8 +45,8 @@ function Hero({
                         <div className="hero-img-wrap">
                             <img
                                 src={image}
-                                alt="Hero"
                                 className="img-fluid"
+                                alt={title}
                             />
                         </div>
                     </div>
