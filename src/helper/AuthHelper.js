@@ -2,10 +2,26 @@ import { toast } from "react-toastify";
 import { DEFAULT_ADMIN, ROLES } from "../constant/CommonConstant"
 import { STORAGE_KEYS } from "../constant/StorageConstant"
 
-export const createAdmin = () => {
-    const users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || "[]").filter((user) => user.role !== ROLES.ADMIN);
+export const getUsers = () => {
+    try {
+        const users = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || "[]");
 
-    const admin = {
+    return Array.isArray(users) ? users : [];
+    } catch (error) {
+        console.error("Invalid users data in localStorage", error);
+        return [];
+    }
+};
+export const createAdmin = () => {
+    const users = getUsers();
+
+    const adminExists = users.some(
+        (user) => user.role === ROLES.ADMIN
+    );
+
+    if (adminExists) return;
+
+    users.push({
         name: DEFAULT_ADMIN.NAME,
         email: DEFAULT_ADMIN.EMAIL,
         mobile: DEFAULT_ADMIN.MOBILE,
@@ -16,11 +32,13 @@ export const createAdmin = () => {
         updatedAt: new Date().toLocaleString(),
         isDeleted: false,
         lastLoginTime: []
-    };
-    users.push(admin);
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-}
+    });
 
+    localStorage.setItem(
+        STORAGE_KEYS.USERS,
+        JSON.stringify(users)
+    );
+};
 export const checkLogin = () => {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.LOGIN_FLAG) || "false");
 }
@@ -45,3 +63,11 @@ export const deleteAccount = (id, role = ROLES.USER) => {
 export const recoverAccount = (id) => {
 
 }
+
+export const getFirestoreData  = (getuser) =>
+    getuser.docs.map((doc) => (
+        {
+            id: doc.id,
+            ...doc.data()
+        }
+    ));

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Hero from '../../components/common/Hero';
+import ShopCart from '../../components/user/ShopCart';
+import BlogSection from '../../components/user/BlogSection';
 
 function Home(props) {
     return (
@@ -32,25 +35,18 @@ function Home(props) {
             </nav>
             {/* End Header/Navigation */}
             {/* Start Hero Section */}
-            <div className="hero">
-                <div className="container">
-                    <div className="row justify-content-between">
-                        <div className="col-lg-5">
-                            <div className="intro-excerpt">
-                                <h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
-                                <p className="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-                                <p><Link href className="btn btn-secondary me-2">Shop Now</Link><Link to="#" className="btn btn-white-outline">Explore</Link></p>
-                            </div>
-                        </div>
-                        <div className="col-lg-7">
-                            <div className="hero-img-wrap">
-                                <img src="../assets/images/couch.png" className="img-fluid" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Hero
+                title="Modern Interior"
+                subtitle="Design Studio"
+                description="Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique."
+                primaryBtnText="Shop Now"
+                primaryBtnLink="/shop"
+                secondaryBtnText="Explore"
+                secondaryBtnLink="/about"
+                image="/assets/images/couch.png"
+            />
             {/* End Hero Section */}
+
             {/* Start Product Section */}
             <div className="product-section">
                 <div className="container">
@@ -62,42 +58,7 @@ function Home(props) {
                             <p><Link to="shop.html" className="btn">Explore</Link></p>
                         </div>
                         {/* End Column 1 */}
-                        {/* Start Column 2 */}
-                        <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                            <Link className="product-item" to="cart.html">
-                                <img src="../assets/images/product-1.png" className="img-fluid product-thumbnail" />
-                                <h3 className="product-title">Nordic Chair</h3>
-                                <strong className="product-price">$50.00</strong>
-                                <span className="icon-cross">
-                                    <img src="../assets/images/cross.svg" className="img-fluid" />
-                                </span>
-                            </Link>
-                        </div>
-                        {/* End Column 2 */}
-                        {/* Start Column 3 */}
-                        <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                            <Link className="product-item" to="cart.html">
-                                <img src="../assets/images/product-2.png" className="img-fluid product-thumbnail" />
-                                <h3 className="product-title">Kruzo Aero Chair</h3>
-                                <strong className="product-price">$78.00</strong>
-                                <span className="icon-cross">
-                                    <img src="../assets/images/cross.svg" className="img-fluid" />
-                                </span>
-                            </Link>
-                        </div>
-                        {/* End Column 3 */}
-                        {/* Start Column 4 */}
-                        <div className="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                            <Link className="product-item" to="cart.html">
-                                <img src="../assets/images/product-3.png" className="img-fluid product-thumbnail" />
-                                <h3 className="product-title">Ergonomic Chair</h3>
-                                <strong className="product-price">$43.00</strong>
-                                <span className="icon-cross">
-                                    <img src="../assets/images/cross.svg" className="img-fluid" />
-                                </span>
-                            </Link>
-                        </div>
-                        {/* End Column 4 */}
+                        <ShopCart limit={3} />
                     </div>
                 </div>
             </div>
@@ -308,143 +269,9 @@ function Home(props) {
             </div>
             {/* End Testimonial Slider */}
             {/* Start Blog Section */}
-            <div className="blog-section">
-                <div className="container">
-                    <div className="row mb-5">
-                        <div className="col-md-6">
-                            <h2 className="section-title">Recent Blog</h2>
-                        </div>
-                        <div className="col-md-6 text-start text-md-end">
-                            <Link to="#" className="more">View All Posts</Link>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                            <div className="post-entry">
-                                <Link to="#" className="post-thumbnail"><img src="../assets/images/post-1.jpg" alt="Image" className="img-fluid" /></Link>
-                                <div className="post-content-entry">
-                                    <h3><Link to="#">First Time Home Owner Ideas</Link></h3>
-                                    <div className="meta">
-                                        <span>by <Link to="#">Kristin Watson</Link></span> <span>on <Link to="#">Dec 19, 2021</Link></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                            <div className="post-entry">
-                                <Link to="#" className="post-thumbnail"><img src="../assets/images/post-2.jpg" alt="Image" className="img-fluid" /></Link>
-                                <div className="post-content-entry">
-                                    <h3><Link to="#">How To Keep Your Furniture Clean</Link></h3>
-                                    <div className="meta">
-                                        <span>by <Link to="#">Robert Fox</Link></span> <span>on <Link to="#">Dec 15, 2021</Link></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                            <div className="post-entry">
-                                <Link to="#" className="post-thumbnail"><img src="../assets/images/post-3.jpg" alt="Image" className="img-fluid" /></Link>
-                                <div className="post-content-entry">
-                                    <h3><Link to="#">Small Space Furniture Apartment Ideas</Link></h3>
-                                    <div className="meta">
-                                        <span>by <Link to="#">Kristin Watson</Link></span> <span>on <Link to="#">Dec 12, 2021</Link></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <BlogSection limit={3} />            
             {/* End Blog Section */}
-            {/* Start Footer Section */}
-            <footer className="footer-section">
-                <div className="container relative">
-                    <div className="sofa-img">
-                        <img src="../assets/images/sofa.png" alt="Image" className="img-fluid" />
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-8">
-                            <div className="subscription-form">
-                                <h3 className="d-flex align-items-center"><span className="me-1"><img src="../assets/images/envelope-outline.svg" alt="Image" className="img-fluid" /></span><span>Subscribe to Newsletter</span></h3>
-                                <form action="#" className="row g-3">
-                                    <div className="col-auto">
-                                        <input type="text" className="form-control" placeholder="Enter your name" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <input type="email" className="form-control" placeholder="Enter your email" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <button className="btn btn-primary">
-                                            <span className="fa fa-paper-plane" />
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row g-5 mb-5">
-                        <div className="col-lg-4">
-                            <div className="mb-4 footer-logo-wrap"><Link to="#" className="footer-logo">Furni<span>.</span></Link></div>
-                            <p className="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
-                            <ul className="list-unstyled custom-social">
-                                <li><Link to="#"><span className="fa fa-brands fa-facebook-f" /></Link></li>
-                                <li><Link to="#"><span className="fa fa-brands fa-twitter" /></Link></li>
-                                <li><Link to="#"><span className="fa fa-brands fa-instagram" /></Link></li>
-                                <li><Link to="#"><span className="fa fa-brands fa-linkedin" /></Link></li>
-                            </ul>
-                        </div>
-                        <div className="col-lg-8">
-                            <div className="row links-wrap">
-                                <div className="col-6 col-sm-6 col-md-3">
-                                    <ul className="list-unstyled">
-                                        <li><Link to="#">About us</Link></li>
-                                        <li><Link to="#">Services</Link></li>
-                                        <li><Link to="#">Blog</Link></li>
-                                        <li><Link to="#">Contact us</Link></li>
-                                    </ul>
-                                </div>
-                                <div className="col-6 col-sm-6 col-md-3">
-                                    <ul className="list-unstyled">
-                                        <li><Link to="#">Support</Link></li>
-                                        <li><Link to="#">Knowledge base</Link></li>
-                                        <li><Link to="#">Live chat</Link></li>
-                                    </ul>
-                                </div>
-                                <div className="col-6 col-sm-6 col-md-3">
-                                    <ul className="list-unstyled">
-                                        <li><Link to="#">Jobs</Link></li>
-                                        <li><Link to="#">Our team</Link></li>
-                                        <li><Link to="#">Leadership</Link></li>
-                                        <li><Link to="#">Privacy Policy</Link></li>
-                                    </ul>
-                                </div>
-                                <div className="col-6 col-sm-6 col-md-3">
-                                    <ul className="list-unstyled">
-                                        <li><Link to="#">Nordic Chair</Link></li>
-                                        <li><Link to="#">Kruzo Aero</Link></li>
-                                        <li><Link to="#">Ergonomic Chair</Link></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-top copyright">
-                        <div className="row pt-4">
-                            <div className="col-lg-6">
-                                <p className="mb-2 text-center text-lg-start">Copyright ©. All Rights Reserved. — Designed with love by <Link to="https://untree.co">Untree.co</Link> Distributed By <Link hreff="https://themewagon.com">ThemeWagon</Link>  {/* License information: https://untree.co/license/ */}
-                                </p>
-                            </div>
-                            <div className="col-lg-6 text-center text-lg-end">
-                                <ul className="list-unstyled d-inline-flex ms-auto">
-                                    <li className="me-4"><Link to="#">Terms &amp; Conditions</Link></li>
-                                    <li><Link to="#">Privacy Policy</Link></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            {/* End Footer Section */}
+
         </div>
 
     );

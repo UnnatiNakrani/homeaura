@@ -8,6 +8,7 @@ import { ROLES } from '../constant/CommonConstant';
 function PrivateRoute({ role }) {
 
     const isLoggedIn = checkLogin();
+    console.log('isLoggedIn', isLoggedIn)
     const userRole = getLoggedInUserRole();
 
     if(!isLoggedIn) {

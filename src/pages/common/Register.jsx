@@ -3,13 +3,17 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Login from './Login';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { ROLES } from '../../constant/CommonConstant';
+import { AUTH_ROUTE } from '../../constant/RoutesConstant';
 
 function Register(props) {
 
     const [user, setUser] = useState([]);
+
+    const Navigate = useNavigate();
 
     const validationSchema = Yup.object({
         fname: Yup.string().min(2, "Minimum 2 characters").required("First name is required"),
@@ -47,7 +51,8 @@ function Register(props) {
                     uid: res.user.uid,
                     createdAt: new Date().toLocaleString(),
                     updatedAt: new Date().toLocaleString(),
-                    isDeleted: false
+                    isDeleted: false,
+                    role: ROLES.USER
                 }
                 console.log(payload, "payload");
 
@@ -56,7 +61,9 @@ function Register(props) {
                 console.log(addUser, "add user");
                 
 
-                alert("Registeration successful")
+                alert("Registeration successful");
+
+                Navigate(AUTH_ROUTE.LOGIN);
                 resetForm();
 
             } catch (error) {
@@ -213,7 +220,7 @@ function Register(props) {
                                         </div>
                                         <div className="login-link">
                                             Already have an account?
-                                            {/* <Link to={ <Login />}>Login</Link> */}
+                                           <Link to={AUTH_ROUTE.LOGIN}> Sign in</Link>
                                         </div>
                                     </form>
                                 </div>

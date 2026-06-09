@@ -3,11 +3,17 @@ import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { auth, db } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import Register from './Register';
+import { ADMIN_ROUTE, AUTH_ROUTE, USER_ROUTE } from '../../constant/RoutesConstant';
+import { ROLES } from '../../constant/CommonConstant';
+import { STORAGE_KEYS } from '../../constant/StorageConstant';
+import { getFirestoreData } from '../../helper/AuthHelper';
 
 function Login(props) {
-    const Navigate = useNavigate();
+
+    const navigate = useNavigate();
 
     const [user, setUser] = useState([]);
 
@@ -28,41 +34,34 @@ function Login(props) {
                     values.email,
                     values.password
                 )
+                const getuser = await getDocs(collection(db, "user"));
 
-                console.log(res.user.uid,"uid");
-
-                const getuser = await getDocs(collection(db, "user"));                
-                console.log(getuser, "sdasda");
-
-                const userMap = getuser.docs.map((doc) => (
-                    {
-                        id: doc.id,
-                        ...doc.data()
-                    }
-                ));
+                const userMap = getFirestoreData(
+                    await getDocs(collection(db, "users"))
+                );
 
                 const loginUser = userMap.find(
                     (user) => user.uid === res.user.uid
                 );
 
-                console.log(loginUser,"loginnnnn")
-
-                localStorage.setItem("user", JSON.stringify(loginUser))
+                  if (!loginUser) {
+                    console.error("User not found in Firestore");
+                    return;
+                }
                 
-                Navigate("/")
+                localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(loginUser))
+                localStorage.setItem(STORAGE_KEYS.LOGIN_FLAG, JSON.stringify(true))
+
+                if (loginUser.role === ROLES.ADMIN) {
+                    navigate(ADMIN_ROUTE.DASHBOARD);
+                } else {
+                    navigate(USER_ROUTE.HOME);
+                }
+
 
             } catch (error) {
                 console.log(error);
-
             }
-            // const newuser = {
-            //     ...values,
-            //     createdAt: new Date().toLocaleString(),
-            //     updatedAt: new Date().toLocaleString(),
-            //     isDeleted: false
-            // };
-            // setUser([...user, newuser]);
-            // console.log(newuser);
         }
     })
 
@@ -145,8 +144,12 @@ function Login(props) {
                                             <a href="#" className="forgot-link">
                                                 Forgot Password?
                                             </a>
-                                        </div>
 
+                                        </div>
+                                        <p className="mt-3">
+                                            Create new account
+                                            <Link to={AUTH_ROUTE.REGISTER}> Sign up</Link>
+                                        </p>
                                         <button
                                             type="submit"
                                             className="btn login-btn w-100 mb-4"

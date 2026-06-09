@@ -1,55 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Hero from '../../components/common/Hero';
+import BlogSection from '../../components/user/BlogSection';
 
 function Blog(props) {
     return (
         <div>
-           {/* Start Header/Navigation */}
-            <nav className="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-                <div className="container">
-                    <Link className="navbar-brand" to="index.html">Furni<span>.</span></Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon" />
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarsFurni">
-                        <ul className="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                            <li className="nav-item active">
-                                <Link className="nav-link" to="index.html">Home</Link>
-                            </li>
-                            <li><Link className="nav-link" to="shop.html">Shop</Link></li>
-                            <li><Link className="nav-link" to="about.html">About us</Link></li>
-                            <li><Link className="nav-link" to="services.html">Services</Link></li>
-                            <li><Link className="nav-link" to="blog.html">Blog</Link></li>
-                            <li><Link className="nav-link" to="contact.html">Contact us</Link></li>
-                        </ul>
-                        <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                            <li><Link className="nav-link" to="#"><img src="../assets/images/user.svg" /></Link></li>
-                            <li><Link className="nav-link" to="cart.html"><img src="../assets/images/cart.svg" /></Link></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            {/* End Header/Navigation */}
-            {/* Start Hero Section */}
-            <div className="hero">
-                <div className="container">
-                    <div className="row justify-content-between">
-                        <div className="col-lg-5">
-                            <div className="intro-excerpt">
-                                <h1>Blog</h1>
-                                <p className="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-                                <p><Link href className="btn btn-secondary me-2">Shop Now</Link><Link to="#" className="btn btn-white-outline">Explore</Link></p>
-                            </div>
-                        </div>
-                        <div className="col-lg-7">
-                            <div className="hero-img-wrap">
-                                <img src="../assets/images/couch.png" className="img-fluid" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* End Hero Section */}
+          {/* Start Hero Section */}
+            <Hero
+            title="Blog"
+            description="Donec vitae odio quis nisl dapibus malesuada."
+            primaryBtnText="Shop Now"
+            primaryBtnLink="/shop"
+            secondaryBtnText="Explore"
+            secondaryBtnLink="/about"
+            image="/assets/images/couch.png"
+        />
+         {/* End Hero Section */}
             {/* Start Blog Section */}
             <div className="blog-section">
                 <div className="container">
@@ -156,6 +123,7 @@ function Blog(props) {
                     </div>
                 </div>
             </div>
+                        <BlogSection limit={9} />
             {/* End Blog Section */}
             {/* Start Testimonial Slider */}
             <div className="testimonial-section before-footer-section">
