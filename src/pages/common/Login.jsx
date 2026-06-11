@@ -33,7 +33,7 @@ function Login(props) {
                     auth,
                     values.email,
                     values.password
-                )
+                );
                 const getuser = await getDocs(collection(db, "user"));
 
                 const userMap = getFirestoreData(

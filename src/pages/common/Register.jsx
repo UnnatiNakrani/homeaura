@@ -56,7 +56,7 @@ function Register(props) {
                 }
                 console.log(payload, "payload");
 
-                const addUser = await addDoc(collection(db, "user"),payload)
+                const addUser = await addDoc(collection(db, "users"),payload)
 
                 console.log(addUser, "add user");
                 
