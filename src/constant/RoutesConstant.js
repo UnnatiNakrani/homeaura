@@ -16,5 +16,5 @@ export const USER_ROUTE = {
 }
 
 export const ADMIN_ROUTE ={
-    DASHBOARD: "dashboard"
+    DASHBOARD: "/dashboard"
 }

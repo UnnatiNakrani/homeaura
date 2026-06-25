@@ -52,7 +52,7 @@ function Register(props) {
                     createdAt: new Date().toLocaleString(),
                     updatedAt: new Date().toLocaleString(),
                     isDeleted: false,
-                    role: ROLES.USER
+                    role: values.email === "admin@gmail.com" ? ROLES.ADMIN : ROLES.USER
                 }
                 console.log(payload, "payload");
 
@@ -81,12 +81,9 @@ function Register(props) {
                 //     default:
                 // alert(error.message);
                 console.log(error, 'eeeeee');
-                
             }
-
         }
     })
-
 
     const { handleSubmit, handleChange, values, errors } = formik;
 

@@ -28,6 +28,7 @@ function Login(props) {
         },
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
+            
             try {
                 const res = await signInWithEmailAndPassword(
                     auth,
@@ -58,10 +59,10 @@ function Login(props) {
                     navigate(USER_ROUTE.HOME);
                 }
 
-
             } catch (error) {
                 console.log(error);
             }
+        
         }
     })
 
