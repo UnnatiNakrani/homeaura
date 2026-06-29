@@ -115,7 +115,7 @@ function Register(props) {
                                                     <span className="input-group-text">
                                                         <i className="bi bi-person" />
                                                     </span>
-                                                    <input onChange={handleChange} value={values.fname} name='fname' type="text" className="form-control" placeholder="First Name" />
+                                                    <input onChange={handleChange}  bvalue={values.fname} name='fname' type="text" className="form-control" placeholder="First Name" />
                                                 </div>
                                                 {errors.fname && (
                                                     <div className="text-danger mt-1">
