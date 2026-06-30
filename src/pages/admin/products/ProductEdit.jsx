@@ -31,7 +31,7 @@ function ProductEdit() {
 
         alert("Product Updated Successfully");
 
-        navigate("/admin/products");
+        navigate("/products");
       } catch (error) {
         console.log(error);
       }
