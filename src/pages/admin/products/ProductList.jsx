@@ -1,6 +1,6 @@
-import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
 
 function ProductList() {
@@ -32,20 +32,23 @@ function ProductList() {
   }, []);
 
   const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "products", id));
+  try {
+    await deleteDoc(doc(db, "products", id));
 
-      alert("Product deleted successfully.");
+    alert("Product deleted successfully.");
 
-      getProducts(); // Refresh the list
-    } catch (error) {
-      console.log(error);
-      alert("Failed to delete product.");
-    }
-  };
+    getProducts(); // Refresh the list
+    
+
+  } catch (error) {
+    console.log(error);
+    alert("Failed to delete product.");
+  }
+};
 
   return (
     <div className="admin-card">
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h3>Products</h3>
 
@@ -57,112 +60,121 @@ function ProductList() {
         </Link>
       </div>
 
-      <div className="row">
+      <div className="table-responsive">
 
-        {loading ? (
+        <table className="table table-hover align-middle">
 
-          <div className="col-12 text-center">
-            <h5>Loading...</h5>
-          </div>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Slug</th>
+              <th>Price</th>
+              <th>Sale Price</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th>Stock</th>
+              <th>Tags</th>
+              <th>Action</th>
+            </tr>
+          </thead>
 
-        ) : products.length === 0 ? (
+          <tbody>
 
-          <div className="col-12 text-center">
-            <h5>No Products Found</h5>
-          </div>
+            {loading ? (
 
-        ) : (
+              <tr>
+                <td colSpan="10" className="text-center">
+                  Loading...
+                </td>
+              </tr>
 
-          products.map((product) => (
+            ) : products.length === 0 ? (
 
-            <div className="col-lg-4 col-md-6 mb-4" key={product.id}>
-              {/* <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4"> */}
-              <div className="card shadow-sm h-100 border-0">
+              <tr>
+                <td colSpan="10" className="text-center">
+                  No Products Found
+                </td>
+              </tr>
 
-                <img
-                  src={
-                    product.images
-                      ? Array.isArray(product.images)
-                        ? product.images[0]
-                        : product.images
-                      : "https://via.placeholder.com/400x250?text=No+Image"
-                  }
-                  className="card-img-top"
-                  style={{
-                    height: "220px",
-                    objectFit: "cover"
-                  }}
-                  alt={product.title}
-                />
+            ) : (
 
-                <div className="card-body">
+              products.map((product) => (
 
-                  <h5>{product.title}</h5>
+                <tr key={product.id}>
 
-                  <p className="text-muted mb-1">
-                    {product.categoryId}
-                  </p>
+                  <td>
+                    {product.images ? (
+                      <img
+                        src={
+                          Array.isArray(product.images)
+                            ? product.images[0]
+                            : product.images
+                        }
+                        alt={product.title}
+                        width="60"
+                        height="60"
+                        style={{
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                        }}
+                      />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
 
-                  <h4 className="text-success">
-                    ₹{product.price}
-                  </h4>
+                  <td>{product.title}</td>
 
-                  {product.salePrice && (
-                    <small className="text-danger">
-                      Sale : ₹{product.salePrice}
-                    </small>
-                  )}
+                  <td>{product.slug}</td>
 
-                  <hr />
+                  <td>₹{product.price}</td>
 
-                  <p>
-                    <strong>SKU :</strong> {product.sku}
-                  </p>
+                  <td>
+                    {product.salePrice
+                      ? `₹${product.salePrice}`
+                      : "-"}
+                  </td>
 
-                  <p>
-                    <strong>Stock :</strong> {product.stock}
-                  </p>
+                  <td>{product.sku}</td>
 
-                  <p>
-                    <strong>Tags :</strong>{" "}
+                  <td>{product.categoryId}</td>
+
+                  <td>{product.stock}</td>
+
+                  <td>
                     {Array.isArray(product.tags)
                       ? product.tags.join(", ")
                       : product.tags}
-                  </p>
+                  </td>
 
-                </div>
-
-                <div className="card-footer bg-white border-0">
-
-                  <div className="d-flex justify-content-between">
+                  <td>
 
                     <Link
                       to={`/products/edit/${product.id}`}
-                      className="btn btn-warning"
+                      className="btn btn-warning btn-sm me-2"
                     >
-                      <i className="fas fa-edit me-2"></i>
                       Edit
                     </Link>
 
                     <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(product.id)}
+                      className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(product.id)}
                     >
-                      <i className="fas fa-trash me-2"></i>
                       Delete
                     </button>
 
-                  </div>
+                  </td>
 
-                </div>
+                </tr>
 
-              </div>
+              ))
 
-            </div>
+            )}
 
-          ))
+          </tbody>
 
-        )}
+        </table>
 
       </div>
 

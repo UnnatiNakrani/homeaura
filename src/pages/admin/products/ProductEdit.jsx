@@ -58,7 +58,7 @@ function ProductEdit() {
     getProduct();
   }, []);
 
-  const {handleSubmit, handleChange, values, setValues} = formik;
+  const { handleChange, handleSubmit, values, setValues} = formik;
 
   return (
     <div className="admin-card">
