@@ -29,7 +29,9 @@ import SupportMessages from './pages/admin/support/SupportMessages';
 import SiteSettings from './pages/admin/setting/SiteSettings';
 import OrderList from './pages/admin/orders/OrderList';
 import UserList from './pages/admin/users/UserList';
-import CategoryForm from './pages/admin/categories/CategoryForm';
+import CategoryList from './pages/admin/categories/CategoryList';
+import CategoryCreate from './pages/admin/categories/CategoryCreate';
+import CategoryEdit from './pages/admin/categories/CategoryEdit';
 
 function App(props) {
 //   useEffect(() => {
@@ -60,7 +62,9 @@ return (
       <Route path="products" element={<ProductList />} />
       <Route path="products/create" element={<ProductCreate />} />
       <Route path="products/edit/:id" element={<ProductEdit />} />
-      <Route path="categories" element={<CategoryForm />} />
+      <Route path="categories" element={<CategoryList />} />
+      <Route path="categories/create" element={<CategoryCreate />} />
+      <Route path="categories/edit/:id" element={<CategoryEdit />} />
       <Route path="orders" element={<OrderList />} />
       <Route path="orders/:id" element={<OrderDetail />} />
       <Route path="users" element={<UserList />} />

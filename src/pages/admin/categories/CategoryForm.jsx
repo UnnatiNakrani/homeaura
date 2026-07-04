@@ -1,91 +1,178 @@
 import React from "react";
 
-function CategoryForm({
+function CategoryForm(props) {
+//   console.log("Props:", props);
+
+  const {
     values,
+    errors,
+    touched,
     handleChange,
+    handleBlur,
     handleSubmit,
-    buttonText = "Save"
-}) {
+    // handleImageChange,
+    buttonText,
+  } = props;
     return (
         <form onSubmit={handleSubmit}>
 
-            <div className="admin-card">
+            <div className="card shadow border-0">
 
-                <div className="mb-3">
-                    <label className="form-label">
-                        Category Name
-                    </label>
-
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="name"
-                        value={values.name}
-                        onChange={handleChange}
-                    />
+                <div className="card-header bg-dark text-white">
+                    <h4 className="mb-0">
+                        Category Information
+                    </h4>
                 </div>
 
-                <div className="mb-3">
-                    <label className="form-label">
-                        Slug
-                    </label>
+                <div className="card-body">
 
-                    <input
-                        type="text"
-                        className="form-control"
-                        name="slug"
-                        value={values.slug}
-                        onChange={handleChange}
-                    />
+                    {/* Name */}
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">
+                            Category Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            className={`form-control ${touched.name && errors.name ? "is-invalid" : ""
+                                }`}
+                            value={values.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="Enter category name"
+                        />
+
+                        {touched.name && errors.name && (
+                            <div className="invalid-feedback">
+                                {errors.name}
+                            </div>
+                        )}
+                    </div> 
+
+                    {/* Slug */}
+                    <div className="mb-3">
+                        <label className="form-label fw-bold">
+                            Slug
+                        </label>
+
+                        <input
+                            type="text"
+                            name="slug"
+                            className={`form-control ${touched.slug && errors.slug ? "is-invalid" : ""
+                                }`}
+                            value={values.slug}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="living-room"
+                        />
+
+                        {touched.slug && errors.slug && (
+                            <div className="invalid-feedback">
+                                {errors.slug}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Parent Category */}
+                    <div className="mb-3">
+
+                        <label className="form-label fw-bold">
+                            Parent Category
+                        </label>
+
+                        <select
+                            name="parentId"
+                            className="form-select"
+                            value={values.parentId}
+                            onChange={handleChange}
+                        >
+
+                            <option value="">
+                                No Parent Category
+                            </option>
+
+                            <option value="living-room">
+                                Living Room
+                            </option>
+
+                            <option value="bedroom">
+                                Bedroom
+                            </option>
+
+                            <option value="office">
+                                Office
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    {/* Description */}
+                    <div className="mb-3">
+
+                        <label className="form-label fw-bold">
+                            Description
+                        </label>
+
+                        <textarea
+                            rows="5"
+                            name="description"
+                            className={`form-control ${touched.description && errors.description
+                                ? "is-invalid"
+                                : ""
+                                }`}
+                            value={values.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="Enter category description"
+                        />
+
+                        {touched.description && errors.description && (
+                            <div className="invalid-feedback">
+                                {errors.description}
+                            </div>
+                        )}
+
+                    </div>
+
+                    {/* Image */}
+                    {/* <div className="mb-4">
+
+                        <label className="form-label fw-bold">
+                            Category Image
+                        </label>
+
+                        <input
+                            type="file"
+                            className={`form-control ${touched.image && errors.image
+                                ? "is-invalid"
+                                : ""
+                                }`}
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+
+                        {touched.image && errors.image && (
+                            <div className="invalid-feedback">
+                                {errors.image}
+                            </div>
+                        )}
+
+                    </div> */}
+
                 </div>
 
-                <div className="mb-3">
-                    <label className="form-label">
-                        Description
-                    </label>
+                <div className="card-footer text-end">
 
-                    <textarea
-                        rows="4"
-                        className="form-control"
-                        name="description"
-                        value={values.description}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label className="form-label">
-                        Image
-                    </label>
-
-                    <input
-                        type="file"
-                        className="form-control"
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="form-label">
-                        Status
-                    </label>
-
-                    <select
-                        className="form-select"
-                        name="status"
-                        value={values.status}
-                        onChange={handleChange}
+                    <button
+                        type="submit"
+                        className="btn btn-dark px-4"
                     >
-                        <option>Active</option>
-                        <option>Inactive</option>
-                    </select>
-                </div>
+                        {buttonText}
+                    </button>
 
-                <button
-                    className="btn btn-admin"
-                    type="submit"
-                >
-                    {buttonText}
-                </button>
+                </div>
 
             </div>
 

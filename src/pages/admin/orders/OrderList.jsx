@@ -1,89 +1,173 @@
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { db } from "../../../firebase";
 
 function OrderList() {
 
-    const orders = [
-        {
-            id: "ORD1001",
-            customer: "John Doe",
-            amount: 25000,
-            status: "Delivered",
-            date: "10 Jun 2026"
-        },
-        {
-            id: "ORD1002",
-            customer: "Emma Watson",
-            amount: 18500,
-            status: "Pending",
-            date: "11 Jun 2026"
-        }
-    ];
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <div className="admin-card">
+  const getOrders = async () => {
+    try {
 
-            <div className="page-header">
-                <h2 className="page-title">
-                    Orders
-                </h2>
-            </div>
+      const querySnapshot = await getDocs(collection(db, "orders"));
 
-            <table className="table align-middle">
+      const orderData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+      setOrders(orderData);
 
-                <tbody>
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    {orders.map((order) => (
-                        <tr key={order.id}>
+  useEffect(() => {
+    getOrders();
+  }, []);
 
-                            <td>{order.id}</td>
+  const badgeClass = (status) => {
+    switch (status) {
+      case "Pending":
+        return "bg-warning";
 
-                            <td>{order.customer}</td>
+      case "Processing":
+        return "bg-info";
 
-                            <td>₹{order.amount}</td>
+      case "Shipped":
+        return "bg-primary";
 
-                            <td>
-                                <span
-                                    className={
-                                        order.status === "Delivered"
-                                            ? "status status-success"
-                                            : "status status-warning"
-                                    }
-                                >
-                                    {order.status}
-                                </span>
-                            </td>
+      case "Delivered":
+        return "bg-success";
 
-                            <td>{order.date}</td>
+      case "Cancelled":
+        return "bg-danger";
 
-                            <td>
-                                <Link
-                                    to={`/admin/orders/${order.id}`}
-                                    className="btn btn-sm btn-admin"
-                                >
-                                    View
-                                </Link>
-                            </td>
+      default:
+        return "bg-secondary";
+    }
+  };
 
-                        </tr>
-                    ))}
+  return (
+    <div className="admin-card">
 
-                </tbody>
+      <div className="page-header mb-4">
 
-            </table>
+        <h2 className="page-title">
+          Orders
+        </h2>
 
-        </div>
-    );
+      </div>
+
+      <div className="table-responsive">
+
+        <table className="table table-hover align-middle">
+
+          <thead>
+
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {loading ? (
+
+              <tr>
+                <td colSpan="8" className="text-center">
+                  Loading...
+                </td>
+              </tr>
+
+            ) : orders.length === 0 ? (
+
+              <tr>
+                <td colSpan="8" className="text-center">
+                  No Orders Found
+                </td>
+              </tr>
+
+            ) : (
+
+              orders.map((order) => (
+
+                <tr key={order.id}>
+
+                  <td>
+                    {order.id.slice(0, 8).toUpperCase()}
+                  </td>
+
+                  <td>
+                    {order.customerName}
+                  </td>
+
+                  <td>
+                    {order.customerEmail}
+                  </td>
+
+                  <td>
+                    {order.customerPhone}
+                  </td>
+
+                  <td>
+                    ₹{order.totalAmount}
+                  </td>
+
+                  <td>
+
+                    <span className={`badge ${badgeClass(order.orderStatus)}`}>
+                      {order.orderStatus}
+                    </span>
+
+                  </td>
+
+                  <td>
+
+                    {order.createdAt?.toDate
+                      ? order.createdAt.toDate().toLocaleDateString()
+                      : "-"}
+
+                  </td>
+
+                  <td>
+
+                    <Link
+                      to={`/admin/orders/${order.id}`}
+                      className="btn btn-admin btn-sm"
+                    >
+                      View
+                    </Link>
+
+                  </td>
+
+                </tr>
+
+              ))
+
+            )}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  );
 }
 
 export default OrderList;
