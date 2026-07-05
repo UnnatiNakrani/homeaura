@@ -13,18 +13,14 @@ function OrderDetail() {
     const getOrder = async () => {
 
         try {
-
             const docRef = doc(db, "orders", id);
-
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-
                 setOrder({
                     id: docSnap.id,
                     ...docSnap.data()
                 });
-
             }
 
         } catch (error) {
@@ -32,7 +28,6 @@ function OrderDetail() {
         } finally {
             setLoading(false);
         }
-
     };
 
     useEffect(() => {
@@ -40,19 +35,15 @@ function OrderDetail() {
     }, [id]);
 
     const updateStatus = async () => {
-
         try {
-
             await updateDoc(doc(db, "orders", id), {
                 orderStatus: order.orderStatus
             });
-
             alert("Order Status Updated");
 
         } catch (error) {
             console.log(error);
         }
-
     };
 
     if (loading) {
@@ -64,31 +55,21 @@ function OrderDetail() {
     }
 
     return (
-
         <div>
-
             <div className="page-header mb-4">
                 <h2 className="page-title">
                     Order Details
                 </h2>
             </div>
-
             <div className="row">
-
                 <div className="col-lg-8">
-
                     <div className="admin-card mb-4">
-
                         <h5 className="mb-4">
                             Order #{order.id.slice(0,8).toUpperCase()}
                         </h5>
-
                         <div className="table-responsive">
-
                             <table className="table align-middle">
-
                                 <thead>
-
                                     <tr>
                                         <th>Product</th>
                                         <th>Image</th>
@@ -96,21 +77,14 @@ function OrderDetail() {
                                         <th>Qty</th>
                                         <th>Total</th>
                                     </tr>
-
                                 </thead>
-
                                 <tbody>
-
                                     {order.products?.map((product,index)=>(
-
                                         <tr key={index}>
-
                                             <td>
                                                 {product.title}
                                             </td>
-
                                             <td>
-
                                                 <img
                                                     src={product.image}
                                                     alt={product.title}
@@ -121,66 +95,45 @@ function OrderDetail() {
                                                         borderRadius:"8px"
                                                     }}
                                                 />
-
                                             </td>
-
                                             <td>
                                                 ₹{product.price}
                                             </td>
-
                                             <td>
                                                 {product.quantity}
                                             </td>
-
                                             <td>
                                                 ₹{product.price * product.quantity}
                                             </td>
-
                                         </tr>
-
                                     ))}
-
                                 </tbody>
-
                             </table>
-
                         </div>
-
                     </div>
-
                 </div>
-
                 <div className="col-lg-4">
-
                     <div className="admin-card mb-4">
-
                         <h5 className="mb-3">
                             Customer Information
                         </h5>
-
                         <p>
                             <strong>Name :</strong>{" "}
                             {order.customerName}
                         </p>
-
                         <p>
                             <strong>Email :</strong>{" "}
                             {order.customerEmail}
                         </p>
-
                         <p>
                             <strong>Phone :</strong>{" "}
                             {order.customerPhone}
                         </p>
-
                     </div>
-
                     <div className="admin-card mb-4">
-
                         <h5 className="mb-3">
                             Shipping Address
                         </h5>
-
                         <p>
                             {order.shippingAddress?.address}
                         </p>

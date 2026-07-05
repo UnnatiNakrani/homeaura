@@ -28,7 +28,7 @@ function Login(props) {
         },
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
-            
+
             try {
                 const res = await signInWithEmailAndPassword(
                     auth,
@@ -45,11 +45,11 @@ function Login(props) {
                     (user) => user.uid === res.user.uid
                 );
 
-                  if (!loginUser) {
+                if (!loginUser) {
                     console.error("User not found in Firestore");
                     return;
                 }
-                
+
                 localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(loginUser))
                 localStorage.setItem(STORAGE_KEYS.LOGIN_FLAG, JSON.stringify(true))
 
