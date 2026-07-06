@@ -1,17 +1,14 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import Login from './Login';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { ROLES } from '../../constant/CommonConstant';
 import { AUTH_ROUTE } from '../../constant/RoutesConstant';
 
 function Register(props) {
-
-    const [user, setUser] = useState([]);
 
     const Navigate = useNavigate();
 
@@ -217,7 +214,7 @@ function Register(props) {
                                         </div>
                                         <div className="login-link">
                                             Already have an account?
-                                           <Link to={AUTH_ROUTE.LOGIN}> Sign in</Link>
+                                           <Link to={AUTH_ROUTE.LOGIN}> Login in</Link>
                                         </div>
                                     </form>
                                 </div>

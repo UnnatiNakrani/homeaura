@@ -35,6 +35,7 @@ function Login(props) {
                     values.email,
                     values.password
                 );
+                console.log(res, "ffffffffffffffffffffffffffffff");
                 const getuser = await getDocs(collection(db, "user"));
 
                 const userMap = getFirestoreData(
@@ -60,7 +61,7 @@ function Login(props) {
                 }
 
             } catch (error) {
-                console.log(error);
+                console.log(error, "fffffffffffffffffffffff");
             }
         }
     })
