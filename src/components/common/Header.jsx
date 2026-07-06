@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE } from '../../constant/RoutesConstant';
 import { authLogout } from '../../helper/AuthHelper';
+import CustomButton from './CustomButton';
 
 function Header(props) {
     const navigate = useNavigate();
@@ -34,12 +35,8 @@ function Header(props) {
                         <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                             <li><Link className="nav-link" to="/profile"><img src="/assets/images/user.svg" /></Link></li>
                             <li><Link className="nav-link" to="/cart"><img src="/assets/images/cart.svg" /></Link></li>
-                            <button
-                                className="btn btn-outline-light btn-sm"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </button>
+
+                            <CustomButton title="Logout" className="btn btn-white-outline" onClick={handleLogout} />
                         </ul>
                     </div>
                 </div>
