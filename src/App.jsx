@@ -32,6 +32,7 @@ import CategoryList from './pages/admin/categories/CategoryList';
 import CategoryCreate from './pages/admin/categories/CategoryCreate';
 import CategoryEdit from './pages/admin/categories/CategoryEdit';
 import { createAdmin } from "./helper/createAdmin";
+import Profile from './pages/user/Profile';
 
 function App(props) {
   useEffect(() => {
@@ -52,6 +53,7 @@ function App(props) {
         <Route path={USER_ROUTE.SERVICES} element={<Services />} />
         <Route path={USER_ROUTE.BLOG} element={<Blog />} />
         <Route path={USER_ROUTE.CONTACTUS} element={<Contact />} />
+        <Route path={USER_ROUTE.PROFILE} element={<Profile />} />
         <Route path={USER_ROUTE.CART} element={<Cart />} />
         <Route path={USER_ROUTE.THANKYOU} element={<Thankyou />} />
       </Route>

@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AUTH_ROUTE } from '../../constant/RoutesConstant';
+import { authLogout } from '../../helper/AuthHelper';
 
 function Header(props) {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await authLogout();
+        navigate(AUTH_ROUTE.LOGIN);
+    };
+
     return (
         <div>
             {/* Start Header/Navigation */}
@@ -24,8 +32,14 @@ function Header(props) {
                             <li><Link className="nav-link" to="/contact">Contact us</Link></li>
                         </ul>
                         <ul className="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                            <li><Link className="nav-link" to="/register"><img src="../assets/images/user.svg" /></Link></li>
-                            <li><Link className="nav-link" to="/cart"><img src="../assets/images/cart.svg" /></Link></li>
+                            <li><Link className="nav-link" to="/profile"><img src="/assets/images/user.svg" /></Link></li>
+                            <li><Link className="nav-link" to="/cart"><img src="/assets/images/cart.svg" /></Link></li>
+                            <button
+                                className="btn btn-outline-light btn-sm"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
                         </ul>
                     </div>
                 </div>
