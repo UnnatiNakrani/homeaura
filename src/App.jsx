@@ -39,7 +39,6 @@ function App(props) {
   }, []);
 
   return (
-
     <Routes>
       <Route element={<PublicRoute />} >
         <Route path={AUTH_ROUTE.LOGIN} element={<Login />} />

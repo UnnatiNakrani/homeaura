@@ -45,10 +45,10 @@ function Footer(props) {
                             <div className="row links-wrap">
                                 <div className="col-6 col-sm-6 col-md-3">
                                     <ul className="list-unstyled">
-                                        <li><Link to="#">About us</Link></li>
-                                        <li><Link to="#">Services</Link></li>
-                                        <li><Link to="#">Blog</Link></li>
-                                        <li><Link to="#">Contact us</Link></li>
+                                        <li><Link to="/about">About us</Link></li>
+                                        <li><Link to="/services">Services</Link></li>
+                                        <li><Link to="/blog">Blog</Link></li>
+                                        <li><Link to="/contact">Contact us</Link></li>
                                     </ul>
                                 </div>
                                 <div className="col-6 col-sm-6 col-md-3">
@@ -73,20 +73,6 @@ function Footer(props) {
                                         <li><Link to="#">Ergonomic Chair</Link></li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-top copyright">
-                        <div className="row pt-4">
-                            <div className="col-lg-6">
-                                <p className="mb-2 text-center text-lg-start">Copyright ©. All Rights Reserved. — Designed with love by <Link to="https://untree.co">Untree.co</Link> Distributed By <Link hreff="https://themewagon.com">ThemeWagon</Link>  {/* License information: https://untree.co/license/ */}
-                                </p>
-                            </div>
-                            <div className="col-lg-6 text-center text-lg-end">
-                                <ul className="list-unstyled d-inline-flex ms-auto">
-                                    <li className="me-4"><Link to="#">Terms &amp; Conditions</Link></li>
-                                    <li><Link to="#">Privacy Policy</Link></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
