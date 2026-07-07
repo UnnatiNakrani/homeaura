@@ -78,7 +78,9 @@ function ProductCreate() {
 
     attributes: Yup.string()
       .trim()
-      .required("Attributes are required")
+      .required("Attributes are required"),
+    status: Yup.string()
+      .required("Status is required")
 
   });
 
@@ -113,6 +115,8 @@ function ProductCreate() {
           }
 
         } else {
+          console.log(values);
+
           await addDoc(collection(db, "products"), {
             title: values.title,
             slug: values.slug,
@@ -120,13 +124,18 @@ function ProductCreate() {
             price: Number(values.price),
             salePrice: Number(values.salePrice),
             sku: values.sku,
-            // images: values.images,
             categoryId: values.categoryId,
             tags: values.tags,
             stock: Number(values.stock),
             attributes: values.attributes,
-            createdAt: serverTimestamp()
+
+            status: values.status,      // Active / Inactive / Draft
+            isDeleted: false,           // Soft delete
+
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
           });
+          console.log(product, "prooooooooooooo");
 
           alert("Product Added Successfully");
           navigate("/products");
@@ -134,7 +143,8 @@ function ProductCreate() {
         resetForm();
         setEdit(null);
       } catch (error) {
-        console.log(error);
+        console.error("Firebase Error:", error);
+        alert(error.message);
       }
     }
   })
@@ -355,6 +365,30 @@ function ProductCreate() {
           {touched.attributes && errors.attributes && (
             <small className="text-danger">
               {errors.attributes}
+            </small>
+          )}
+        </div>
+
+        {/* status */}
+        <div className="mb-3">
+          <label className="form-label">
+            Status
+          </label>
+
+          <select
+            name="status"
+            className="form-select"
+            value={values.status}
+            onChange={handleChange}
+          >
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="Draft">Draft</option>
+          </select>
+
+          {touched.status && errors.status && (
+            <small className="text-danger">
+              {errors.status}
             </small>
           )}
         </div>

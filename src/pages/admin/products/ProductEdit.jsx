@@ -16,11 +16,11 @@ function ProductEdit() {
       price: "",
       salePrice: "",
       sku: "",
-      images: "",
       categoryId: "",
       tags: "",
       stock: "",
       attributes: "",
+      status: "Active",
     },
 
     onSubmit: async (values) => {
@@ -58,7 +58,7 @@ function ProductEdit() {
     getProduct();
   }, []);
 
-  const { handleChange, handleSubmit, values, setValues} = formik;
+  const { handleChange, handleSubmit, values, setValues } = formik;
 
   return (
     <div className="admin-card">

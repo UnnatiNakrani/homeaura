@@ -17,6 +17,7 @@ function Checkout(props) {
             secondaryBtnLink="/about"
             image="/assets/images/couch.png"
         />
+        
          {/* End Hero Section */}
             <div className="untree_co-section">
                 <div className="container">
