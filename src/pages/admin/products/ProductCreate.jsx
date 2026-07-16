@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
 import { useFormik } from "formik";
 import { db } from "../../../firebase";
 import * as Yup from "yup";
 import { useNavigate } from 'react-router-dom';
+import { uploadImage } from '../../../helper/cloudinary'
 
 function ProductCreate() {
 
@@ -92,62 +93,63 @@ function ProductCreate() {
       price: "",
       salePrice: "",
       sku: "",
-      // images: "",
+      images: null,
       categoryId: "",
       tags: "",
       stock: "",
-      attributes: ""
+      attributes: "",
+      status: "Active",
     },
     validationSchema: ProductSchema,
     onSubmit: async (values, { resetForm }) => {
-      console.log("Submitted", values);
       try {
-        if (edit) {
-          const index = product.findIndex((p) => p.id === edit)
 
-          if (index !== -1) {
-            const updateProduct = [...product]
-            updateProduct[index] = {
-              ...updateProduct[index],
-              ...values
-            }
-            setProduct(updateProduct)
-          }
+        let imageUrl = "";
 
-        } else {
-          console.log(values);
+        if (values.images) {
 
-          await addDoc(collection(db, "products"), {
-            title: values.title,
-            slug: values.slug,
-            description: values.description,
-            price: Number(values.price),
-            salePrice: Number(values.salePrice),
-            sku: values.sku,
-            categoryId: values.categoryId,
-            tags: values.tags,
-            stock: Number(values.stock),
-            attributes: values.attributes,
+          console.log("Uploading Image...");
 
-            status: values.status,      // Active / Inactive / Draft
-            isDeleted: false,           // Soft delete
+          imageUrl = await uploadImage(values.images);
 
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-          });
-          console.log(product, "prooooooooooooo");
+          console.log("Uploaded:", imageUrl);
 
-          alert("Product Added Successfully");
-          navigate("/products");
         }
+
+        await addDoc(collection(db, "products"), {
+          title: values.title,
+          slug: values.slug,
+          description: values.description,
+          price: Number(values.price),
+          salePrice: Number(values.salePrice),
+          sku: values.sku,
+
+          image: imageUrl,
+
+          categoryId: values.categoryId,
+          tags: values.tags,
+          stock: Number(values.stock),
+          attributes: values.attributes,
+          status: values.status,
+          isDeleted: false,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        });
+
+        alert("Product Created Successfully");
+
         resetForm();
-        setEdit(null);
+
+        navigate("/products");
+
       } catch (error) {
-        console.error("Firebase Error:", error);
-        alert(error.message);
+        console.log(error);
       }
     }
   })
+  const handleImageChange = (e) => {
+    formik.setFieldValue("images", e.target.files[0]);
+  };
 
   const { handleChange, handleSubmit, handleBlur, values, touched, errors } = formik;
 
@@ -279,19 +281,22 @@ function ProductCreate() {
         </div>
 
         {/* Images */}
-        {/* <div className="mb-3">
-          <label className="form-label">Product Images</label>
+        <div className="mb-3">
+          <label className="form-label">Product Image</label>
+
           <input
             type="file"
             className="form-control"
-            onChange={(e) =>
-              formik.setFieldValue("images", e.target.files[0])
-            }
+            accept="image/*"
+            onChange={handleImageChange}
           />
+
           {touched.images && errors.images && (
-            <small className="text-danger">{errors.images}</small>
+            <small className="text-danger">
+              {errors.images}
+            </small>
           )}
-        </div> */}
+        </div>
 
         {/* Category */}
         <div className="mb-3">

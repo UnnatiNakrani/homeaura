@@ -48,7 +48,7 @@ export const createAdmin = async () => {
       createdAt: new Date(),
     });
 
-    console.log("Admin Created");
+    // console.log("Admin Created");
   } catch (error) {
 
     console.log(error);

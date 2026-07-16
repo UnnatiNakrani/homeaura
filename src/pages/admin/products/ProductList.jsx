@@ -104,12 +104,12 @@ function ProductList() {
                 <tr key={product.id}>
 
                   <td>
-                    {product.images ? (
+                    {product.image ? (
                       <img
                         src={
-                          Array.isArray(product.images)
-                            ? product.images[0]
-                            : product.images
+                          Array.isArray(product.image)
+                            ? product.image[0]
+                            : product.image
                         }
                         alt={product.title}
                         width="60"
