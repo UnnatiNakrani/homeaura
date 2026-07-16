@@ -10,6 +10,8 @@ import { ADMIN_ROUTE, AUTH_ROUTE, USER_ROUTE } from '../../constant/RoutesConsta
 import { ROLES } from '../../constant/CommonConstant';
 import { STORAGE_KEYS } from '../../constant/StorageConstant';
 import { getFirestoreData } from '../../helper/AuthHelper';
+import { toast } from "react-toastify";
+import { AUTH_MESSAGES } from "../../constant/MessageConstant";
 
 function Login(props) {
 
@@ -19,7 +21,7 @@ function Login(props) {
 
     const validationSchema = Yup.object({
         email: Yup.string().email("Invalid email").required("Email is required"),
-        password: Yup.string().min(3, "Minimum 5 characters").required("Password is required"),
+        password: Yup.string().min(4, "Minimum 4 characters").required("Password is required"),
     });
     const formik = useFormik({
         initialValues: {
@@ -27,6 +29,8 @@ function Login(props) {
             password: ""
         },
         validationSchema,
+        validateOnChange: false,
+        validateOnBlur: true,
         onSubmit: async (values, { resetForm }) => {
 
             try {
@@ -53,70 +57,102 @@ function Login(props) {
                 localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(loginUser))
                 localStorage.setItem(STORAGE_KEYS.LOGIN_FLAG, JSON.stringify(true))
 
-                if (loginUser.role === ROLES.ADMIN) {
-                    navigate(ADMIN_ROUTE.DASHBOARD);
-                } else {
-                    navigate(USER_ROUTE.HOME);
-                }
+                toast.success(AUTH_MESSAGES.LOGIN_SUCCESS);
+
+                setTimeout(() => {
+                    if (loginUser.role === ROLES.ADMIN) {
+                        navigate(ADMIN_ROUTE.DASHBOARD);
+                    } else {
+                        navigate(USER_ROUTE.HOME);
+                    }
+                }, 1500);
 
             } catch (error) {
+                switch (error.code) {
+                    case "auth/invalid-credential":
+                    case "auth/wrong-password":
+                        toast.error(AUTH_MESSAGES.INVALID_CREDENTIALS);
+                        break;
+
+                    case "auth/user-not-found":
+                        toast.error(AUTH_MESSAGES.USER_NOT_FOUND);
+                        break;
+
+                    case "auth/invalid-email":
+                        toast.error(AUTH_MESSAGES.INVALID_EMAIL);
+                        break;
+
+                    case "auth/network-request-failed":
+                        toast.error(AUTH_MESSAGES.NETWORK_ERROR);
+                        break;
+
+                    case "auth/too-many-requests":
+                        toast.error(AUTH_MESSAGES.TOO_MANY_REQUESTS);
+                        break;
+
+                    default:
+                        toast.error(AUTH_MESSAGES.UNKNOWN_ERROR);
+                        break;
+                }
+
                 console.log(error);
             }
         }
+
     })
 
     const handleGoogleLogin = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
 
-    const user = result.user;
+            const user = result.user;
 
-    const userRef = doc(db, "users", user.uid);
+            const userRef = doc(db, "users", user.uid);
 
-    const userSnap = await getDoc(userRef);
+            const userSnap = await getDoc(userRef);
 
-    let loginUser;
+            let loginUser;
 
-    if (!userSnap.exists()) {
-      loginUser = {
-        uid: user.uid,
-        fname: user.displayName?.split(" ")[0] || "",
-        lname: user.displayName?.split(" ").slice(1).join(" ") || "",
-        email: user.email,
-        mobile: user.phoneNumber || "",
-        role: ROLES.USER,
-        profileImage: user.photoURL || "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+            if (!userSnap.exists()) {
+                loginUser = {
+                    uid: user.uid,
+                    fname: user.displayName?.split(" ")[0] || "",
+                    lname: user.displayName?.split(" ").slice(1).join(" ") || "",
+                    email: user.email,
+                    mobile: user.phoneNumber || "",
+                    role: ROLES.USER,
+                    profileImage: user.photoURL || "",
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                };
 
-      await setDoc(userRef, loginUser);
-    } else {
-      loginUser = userSnap.data();
-    }
+                await setDoc(userRef, loginUser);
+            } else {
+                loginUser = userSnap.data();
+            }
 
-    localStorage.setItem(
-      STORAGE_KEYS.USERS,
-      JSON.stringify(loginUser)
-    );
+            localStorage.setItem(
+                STORAGE_KEYS.USERS,
+                JSON.stringify(loginUser)
+            );
 
-    localStorage.setItem(
-      STORAGE_KEYS.LOGIN_FLAG,
-      JSON.stringify(true)
-    );
+            localStorage.setItem(
+                STORAGE_KEYS.LOGIN_FLAG,
+                JSON.stringify(true)
+            );
 
-    if (loginUser.role === ROLES.ADMIN) {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/");
-    }
+            if (loginUser.role === ROLES.ADMIN) {
+                navigate("/admin/dashboard");
+            } else {
+                navigate("/");
+            }
 
-  } catch (error) {
-    console.log(error);
-  }
-};
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    const { handleChange, handleSubmit, values, errors } = formik;
+    const { handleChange, handleSubmit, values, errors, handleBlur, touched } = formik;
 
     return (
         <section className="login-section">
@@ -150,12 +186,13 @@ function Login(props) {
                                                     name="email"
                                                     value={values.email}
                                                     onChange={handleChange}
-                                                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                                                    onBlur={handleBlur}
+                                                    className={`form-control ${touched.email ? "is-invalid" : ""}`}
                                                     placeholder="Enter Email"
                                                 />
                                             </div>
 
-                                            {errors.email && (
+                                            {touched.email && errors.email && (
                                                 <div className="text-danger mt-1">
                                                     {errors.email}
                                                 </div>
@@ -172,12 +209,13 @@ function Login(props) {
                                                     name="password"
                                                     value={values.password}
                                                     onChange={handleChange}
-                                                    className={`form-control ${errors.password ? "is-invalid" : ""}`}
+                                                    onBlur={handleBlur}
+                                                    className={`form-control ${touched.password ? "is-invalid" : ""}`}
                                                     placeholder="Enter Password"
                                                 />
                                             </div>
 
-                                            {errors.password && (
+                                            {touched.password && errors.password && (
                                                 <div className="text-danger mt-1">
                                                     {errors.password}
                                                 </div>

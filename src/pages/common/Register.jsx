@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { addDoc, collection } from 'firebase/firestore';
 import { ROLES } from '../../constant/CommonConstant';
 import { AUTH_ROUTE } from '../../constant/RoutesConstant';
+import { AUTH_MESSAGES } from "../../constant/MessageConstant";
+import { toast } from 'react-toastify';
 
 function Register(props) {
 
@@ -17,7 +19,7 @@ function Register(props) {
         lname: Yup.string().min(2, "Minimum 2 characters").required("Last name is required"),
         email: Yup.string().email("Invalid email").required("Email is required"),
         mobile: Yup.string().required("Mobile number is required").matches(/^[6-9]\d{9}$/, "Enter a valid Indian mobile number"),
-        password: Yup.string().min(5, "Minimum 5 characters").required("Password is required"),
+        password: Yup.string().min(4, "Minimum 4 characters").required("Password is required"),
         confirmpassword: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match").required("Confirm password is required")
     });
 
@@ -32,6 +34,8 @@ function Register(props) {
             confirmpassword: ""
         },
         validationSchema,
+        validateOnChange: false,
+        validateOnBlur: true,
         onSubmit: async (values, { resetForm }) => {
             try {
                 // Create user in Firebase Auth
@@ -58,31 +62,37 @@ function Register(props) {
                 console.log(addUser, "add user");
 
 
-                alert("Registeration successful");
-
+                toast.success(AUTH_MESSAGES.REGISTER_SUCCESS);
                 Navigate(AUTH_ROUTE.LOGIN);
                 resetForm();
 
             } catch (error) {
-                // console.log(error);
-                // switch (error.code) {
-                //     case "auth/email-already-in-use":
-                //         alert("Email already registered");
-                //         break;
-                //     case "auth/invalid-email":
-                //         alert("Invalid email address");
-                //         break;
-                //     case "auth/weak-password":
-                //         alert("Password should be at least 5 characters");
-                //         break;
-                //     default:
-                // alert(error.message);
-                console.log(error, 'eeeeee');
+                switch (error.code) {
+                    case "auth/email-already-in-use":
+                        toast.error(AUTH_MESSAGES.EMAIL_ALREADY_EXISTS);
+                        break;
+
+                    case "auth/invalid-email":
+                        toast.error(AUTH_MESSAGES.INVALID_EMAIL);
+                        break;
+
+                    case "auth/weak-password":
+                        toast.error(AUTH_MESSAGES.WEAK_PASSWORD);
+                        break;
+
+                    case "auth/network-request-failed":
+                        toast.error(AUTH_MESSAGES.NETWORK_ERROR);
+                        break;
+
+                    default:
+                        toast.error(AUTH_MESSAGES.UNKNOWN_ERROR);
+                        break;
+                }
             }
         }
     })
 
-    const { handleSubmit, handleChange, values, errors } = formik;
+    const { handleSubmit, handleChange, values, errors, handleBlur, touched } = formik;
 
     return (
         <section className="login-section">
@@ -121,7 +131,7 @@ function Register(props) {
                                         Join HomeAura today
                                     </p>
 
-                                    <form>
+                                    <form onSubmit={handleSubmit}>
 
                                         <div className="row">
 
@@ -135,10 +145,19 @@ function Register(props) {
 
                                                     <input
                                                         type="text"
-                                                        className="form-control"
+                                                        name="fname"
+                                                        value={values.fname}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        className={`form-control ${touched.fname && errors.fname ? "is-invalid" : ""
+                                                            }`}
                                                         placeholder="First Name"
                                                     />
-
+                                                    {touched.fname && errors.fname && (
+                                                        <div className="text-danger mt-1">
+                                                            {errors.fname}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                             </div>
@@ -153,10 +172,19 @@ function Register(props) {
 
                                                     <input
                                                         type="text"
-                                                        className="form-control"
+                                                        name="lname"
+                                                        value={values.lname}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        className={`form-control ${touched.lname && errors.lname ? "is-invalid" : ""
+                                                            }`}
                                                         placeholder="Last Name"
                                                     />
-
+                                                    {touched.lname && errors.lname && (
+                                                        <div className="text-danger mt-1">
+                                                            {errors.lname}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                             </div>
@@ -173,10 +201,19 @@ function Register(props) {
 
                                                 <input
                                                     type="email"
-                                                    className="form-control"
+                                                    name="email"
+                                                    value={values.email}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    className={`form-control ${touched.email && errors.email ? "is-invalid" : ""
+                                                        }`}
                                                     placeholder="Email Address"
                                                 />
-
+                                                {touched.email && errors.email && (
+                                                    <div className="text-danger mt-1">
+                                                        {errors.email}
+                                                    </div>
+                                                )}
                                             </div>
 
                                         </div>
@@ -191,10 +228,19 @@ function Register(props) {
 
                                                 <input
                                                     type="text"
-                                                    className="form-control"
+                                                    name="mobile"
+                                                    value={values.mobile}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    className={`form-control ${touched.mobile && errors.mobile ? "is-invalid" : ""
+                                                        }`}
                                                     placeholder="Mobile Number"
                                                 />
-
+                                                {touched.mobile && errors.mobile && (
+                                                    <div className="text-danger mt-1">
+                                                        {errors.mobile}
+                                                    </div>
+                                                )}
                                             </div>
 
                                         </div>
@@ -211,10 +257,19 @@ function Register(props) {
 
                                                     <input
                                                         type="password"
-                                                        className="form-control"
+                                                        name="password"
+                                                        value={values.password}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        className={`form-control ${touched.password && errors.password ? "is-invalid" : ""
+                                                            }`}
                                                         placeholder="Password"
                                                     />
-
+                                                    {touched.password && errors.password && (
+                                                        <div className="text-danger mt-1">
+                                                            {errors.password}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                             </div>
@@ -229,18 +284,28 @@ function Register(props) {
 
                                                     <input
                                                         type="password"
-                                                        className="form-control"
+                                                        name="confirmpassword"
+                                                        value={values.confirmpassword}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        className={`form-control ${touched.confirmpassword && errors.confirmpassword
+                                                            ? "is-invalid"
+                                                            : ""
+                                                            }`}
                                                         placeholder="Confirm Password"
                                                     />
 
+                                                    {touched.confirmpassword &&
+                                                        errors.confirmpassword && (
+                                                            <div className="text-danger mt-1">
+                                                                {errors.confirmpassword}
+                                                            </div>
+                                                        )}
+
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                         <div className="form-check mb-4">
-
                                             <input
                                                 className="form-check-input"
                                                 type="checkbox"
