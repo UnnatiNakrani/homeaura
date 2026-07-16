@@ -13,7 +13,8 @@ export const USER_ROUTE = {
     CONTACTUS: "/contact",
     CART: "/cart",
     THANKYOU: "/thankyou",
-    PROFILE: "/profile"
+    PROFILE: "/profile",
+    CHECKOUT: "/checkout"
 }
 
 export const ADMIN_ROUTE ={

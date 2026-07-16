@@ -1,37 +1,86 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { Link } from "react-router-dom";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
+import { toast } from "react-toastify";
 
 function ShopCard({ limit }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const addToCart = async (product) => {
+    try {
+
+      const user = auth.currentUser;
+
+      if (!user) {
+        toast.error("Please login first");
+        return;
+      }
+
+
+      const q = query(
+        collection(db, "cart"),
+        where("userId", "==", user.uid),
+        where("productId", "==", product.id)
+      );
+
+      const snapshot = await getDocs(q);
+      if (!snapshot.empty) {
+        const cartDoc = snapshot.docs[0];
+        const cartData = cartDoc.data();
+        await updateDoc(cartDoc.ref, {
+          quantity: cartData.quantity + 1,
+          total:
+            (cartData.quantity + 1) *
+            product.price
+        });
+      } else {
+        await addDoc(collection(db, "cart"), {
+          userId: user.uid,
+          productId: product.id,
+          title: product.title,
+          image: product.images?.[0] || product.image,
+          price: Number(product.price),
+          quantity: 1,
+          total: Number(product.price),
+          stock: Number(product.stock),
+          createdAt: new Date()
+        });
+      }
+      toast.success("Product added to cart");
+    } catch (error) {
+      console.log(error);
+      toast.error("Cart error");
+    }
+  };
   useEffect(() => {
     getProducts();
   }, []);
-
   const getProducts = async () => {
     try {
       const snapshot = await getDocs(collection(db, "products"));
-
       let productList = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
       // Show only active products (optional)
       productList = productList.filter(
         (product) =>
           product.status === "Active" &&
           !product.isDeleted
       );
-
       // Limit products if limit prop is passed
       if (limit) {
         productList = productList.slice(0, limit);
       }
-
       setProducts(productList);
     } catch (error) {
       console.log(error);
@@ -65,7 +114,7 @@ function ShopCard({ limit }) {
         >
           <Link
             className="product-item"
-            to={`/product/${product.id}`}
+            to={`/cart`}
           >
             <img
               src={product.image}
@@ -81,7 +130,13 @@ function ShopCard({ limit }) {
               ₹{Number(product.price).toLocaleString()}
             </strong>
 
-            <span className="icon-cross">
+            <span
+              className="icon-cross"
+              onClick={(e) => {
+                e.preventDefault();
+                addToCart(product);
+              }}
+            >
               <img
                 src="/assets/images/cross.svg"
                 alt="Add"

@@ -33,6 +33,7 @@ import CategoryCreate from './pages/admin/categories/CategoryCreate';
 import CategoryEdit from './pages/admin/categories/CategoryEdit';
 import { createAdmin } from "./helper/createAdmin";
 import Profile from './pages/user/Profile';
+import Checkout from './pages/user/Checkout';
 
 function App(props) {
   useEffect(() => {
@@ -56,6 +57,7 @@ function App(props) {
         <Route path={USER_ROUTE.PROFILE} element={<Profile />} />
         <Route path={USER_ROUTE.CART} element={<Cart />} />
         <Route path={USER_ROUTE.THANKYOU} element={<Thankyou />} />
+        <Route path={USER_ROUTE.CHECKOUT} element={<Checkout />} />
       </Route>
 
       <Route element={<PrivateRoute role={ROLES.ADMIN} />}>

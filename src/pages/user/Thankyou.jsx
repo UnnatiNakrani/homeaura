@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../../components/common/Hero';
 import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 
 function Thankyou(props) {
     return (
@@ -30,11 +31,12 @@ function Thankyou(props) {
                             </span>
                             <h2 className="display-3 text-black">Thank you!</h2>
                             <p className="lead mb-5">You order was successfuly completed.</p>
-                            <p><a href="shop.html" className="btn btn-sm btn-outline-black">Back to shop</a></p>
+                            <p><Link to="/shop" className="btn btn-sm btn-outline-black">Back to shop</Link></p>
                         </div>
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
 
     );
