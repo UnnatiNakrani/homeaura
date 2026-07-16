@@ -39,11 +39,16 @@ function Login(props) {
                     values.email,
                     values.password
                 );
-                const getuser = await getDocs(collection(db, "user"));
+                const getuser = await getDocs(collection(db, "users"));
 
                 const userMap = getFirestoreData(
                     await getDocs(collection(db, "users"))
                 );
+
+                console.log("Auth UID:", res.user.uid);
+
+console.log("Logged in email:", res.user.email);
+console.log("Logged in uid:", res.user.uid);
 
                 const loginUser = userMap.find(
                     (user) => user.uid === res.user.uid

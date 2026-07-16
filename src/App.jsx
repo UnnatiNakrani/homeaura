@@ -21,11 +21,6 @@ import ProductCreate from './pages/admin/products/ProductCreate';
 import ProductEdit from './pages/admin/products/ProductEdit';
 import OrderDetail from './pages/admin/orders/OrderDetail';
 import UserDetail from './pages/admin/users/UserDetail';
-import BlogManager from './pages/admin/blogs/BlogManager';
-import MediaLibrary from './pages/admin/media/MediaLibrary';
-import AnalyticsDashboard from './pages/admin/analytics/AnalyticsDashboard';
-import SupportMessages from './pages/admin/support/SupportMessages';
-import SiteSettings from './pages/admin/setting/SiteSettings';
 import OrderList from './pages/admin/orders/OrderList';
 import UserList from './pages/admin/users/UserList';
 import CategoryList from './pages/admin/categories/CategoryList';
@@ -34,6 +29,8 @@ import CategoryEdit from './pages/admin/categories/CategoryEdit';
 import { createAdmin } from "./helper/createAdmin";
 import Profile from './pages/user/Profile';
 import Checkout from './pages/user/Checkout';
+import ContactList from './pages/admin/contact/ContactList';
+import SiteSettings from './pages/admin/setting/SiteSettings';
 
 function App(props) {
   useEffect(() => {
@@ -77,10 +74,7 @@ function App(props) {
           <Route path="users" element={<UserList />} />
           <Route path="users/:id" element={<UserDetail />} />
 
-          <Route path="blogs" element={<BlogManager />} />
-          <Route path="media" element={<MediaLibrary />} />
-          <Route path="analytics" element={<AnalyticsDashboard />} />
-          <Route path="support" element={<SupportMessages />} />
+         <Route path="/contact" element={<ContactList />} />
           <Route path="settings" element={<SiteSettings />} />
         </Route>
       </Route>

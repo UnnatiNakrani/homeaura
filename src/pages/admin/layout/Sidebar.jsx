@@ -46,34 +46,6 @@ function Sidebar() {
                 </li>
 
                 <li>
-                    <NavLink to="/blogs">
-                        <i className="bi bi-journal-text"></i>
-                        Blogs
-                    </NavLink>
-                </li>
-
-                <li>
-                    <NavLink to="/media">
-                        <i className="bi bi-images"></i>
-                        Media Library
-                    </NavLink>
-                </li>
-
-                <li>
-                    <NavLink to="/analytics">
-                        <i className="bi bi-bar-chart"></i>
-                        Analytics
-                    </NavLink>
-                </li>
-
-                <li>
-                    <NavLink to="/support">
-                        <i className="bi bi-chat-dots"></i>
-                        Support
-                    </NavLink>
-                </li>
-
-                <li>
                     <NavLink to="/settings">
                         <i className="bi bi-gear"></i>
                         Settings

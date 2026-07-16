@@ -3,22 +3,71 @@ import { Link } from 'react-router-dom';
 import Hero from '../../components/common/Hero';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase";
+import { toast } from "react-toastify";
 
 function Contact(props) {
+
+    const formik = useFormik({
+        initialValues: {
+            fname: "",
+            lname: "",
+            email: "",
+            message: "",
+        },
+
+        validationSchema: Yup.object({
+            fname: Yup.string()
+                .min(2, "Minimum 2 characters")
+                .required("First name is required"),
+
+            lname: Yup.string()
+                .min(2, "Minimum 2 characters")
+                .required("Last name is required"),
+
+            email: Yup.string()
+                .email("Invalid Email")
+                .required("Email is required"),
+
+            message: Yup.string()
+                .min(10, "Minimum 10 characters")
+                .required("Message is required"),
+        }),
+
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                await addDoc(collection(db, "contacts"), {
+                    ...values,
+                    createdAt: serverTimestamp(),
+                });
+
+                toast.success("Message Sent Successfully");
+
+                resetForm();
+            } catch (error) {
+                console.log(error);
+                toast.error("Something went wrong");
+            }
+        },
+    });
+
     return (
         <div>
-            <Header />            
+            <Header />
             {/* Start Hero Section */}
             <Hero
-            title="Contact us"
-            description="Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate."
-            primaryBtnText="Shop Now"
-            primaryBtnLink="/shop"
-            secondaryBtnText="Explore"
-            secondaryBtnLink="/about"
-            image="/assets/images/couch.png"
-        />
-           
+                title="Contact us"
+                description="Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate."
+                primaryBtnText="Shop Now"
+                primaryBtnLink="/shop"
+                secondaryBtnText="Explore"
+                secondaryBtnLink="/about"
+                image="/assets/images/couch.png"
+            />
+
             {/* End Hero Section */}
             {/* Start Contact Form */}
             <div className="untree_co-section">
@@ -64,28 +113,84 @@ function Contact(props) {
                                         </div> {/* /.service */}
                                     </div>
                                 </div>
-                                <form>
+                                <form onSubmit={formik.handleSubmit}>
                                     <div className="row">
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label className="text-black" htmlFor="fname">First name</label>
-                                                <input type="text" className="form-control" id="fname" />
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="fname"
+                                                    name="fname"
+                                                    value={formik.values.fname}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
+
+                                                {formik.touched.fname && formik.errors.fname && (
+                                                    <small className="text-danger">
+                                                        {formik.errors.fname}
+                                                    </small>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="col-6">
                                             <div className="form-group">
                                                 <label className="text-black" htmlFor="lname">Last name</label>
-                                                <input type="text" className="form-control" id="lname" />
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="lname"
+                                                    name="lname"
+                                                    value={formik.values.lname}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                />
+
+                                                {formik.touched.lname && formik.errors.lname && (
+                                                    <small className="text-danger">
+                                                        {formik.errors.lname}
+                                                    </small>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="form-group">
                                         <label className="text-black" htmlFor="email">Email address</label>
-                                        <input type="email" className="form-control" id="email" />
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            id="email"
+                                            name="email"
+                                            value={formik.values.email}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+
+                                        {formik.touched.email && formik.errors.email && (
+                                            <small className="text-danger">
+                                                {formik.errors.email}
+                                            </small>
+                                        )}
                                     </div>
                                     <div className="form-group mb-5">
                                         <label className="text-black" htmlFor="message">Message</label>
-                                        <textarea name className="form-control" id="message" cols={30} rows={5} defaultValue={""} />
+                                        <textarea
+                                            className="form-control"
+                                            id="message"
+                                            name="message"
+                                            rows="5"
+                                            value={formik.values.message}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+
+                                        {formik.touched.message && formik.errors.message && (
+                                            <small className="text-danger">
+                                                {formik.errors.message}
+                                            </small>
+                                        )}
                                     </div>
                                     <button type="submit" className="btn btn-primary-hover-outline">Send Message</button>
                                 </form>
