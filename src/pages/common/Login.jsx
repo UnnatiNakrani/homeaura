@@ -1,10 +1,10 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { auth, db } from '../../firebase';
+import { auth, db, googleProvider } from '../../firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import Register from './Register';
 import { ADMIN_ROUTE, AUTH_ROUTE, USER_ROUTE } from '../../constant/RoutesConstant';
 import { ROLES } from '../../constant/CommonConstant';
@@ -64,6 +64,57 @@ function Login(props) {
             }
         }
     })
+
+    const handleGoogleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+
+    const user = result.user;
+
+    const userRef = doc(db, "users", user.uid);
+
+    const userSnap = await getDoc(userRef);
+
+    let loginUser;
+
+    if (!userSnap.exists()) {
+      loginUser = {
+        uid: user.uid,
+        fname: user.displayName?.split(" ")[0] || "",
+        lname: user.displayName?.split(" ").slice(1).join(" ") || "",
+        email: user.email,
+        mobile: user.phoneNumber || "",
+        role: ROLES.USER,
+        profileImage: user.photoURL || "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await setDoc(userRef, loginUser);
+    } else {
+      loginUser = userSnap.data();
+    }
+
+    localStorage.setItem(
+      STORAGE_KEYS.USERS,
+      JSON.stringify(loginUser)
+    );
+
+    localStorage.setItem(
+      STORAGE_KEYS.LOGIN_FLAG,
+      JSON.stringify(true)
+    );
+
+    if (loginUser.role === ROLES.ADMIN) {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/");
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
     const { handleChange, handleSubmit, values, errors } = formik;
 
@@ -155,6 +206,24 @@ function Login(props) {
                                             className="btn login-btn w-100 mb-4"
                                         >
                                             Login Now
+                                        </button>
+
+                                        <div className="text-center my-3">
+                                            <span className="text-muted">OR</span>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center"
+                                            onClick={handleGoogleLogin}
+                                        >
+                                            <img
+                                                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                                alt="Google"
+                                                width="20"
+                                                className="me-2"
+                                            />
+                                            Continue with Google
                                         </button>
                                     </form>
                                 </div>

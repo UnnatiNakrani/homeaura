@@ -1275,3 +1275,172 @@ textarea {
   }
 
 }
+
+/* ===========================
+   AUTHENTICATION
+=========================== */
+
+.login-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: #eff2f1;
+    padding: 70px 0;
+}
+
+.login-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+    background: #fff;
+}
+
+/* Left Side */
+
+.left-side {
+    background: #3b5d50;
+    color: #fff;
+    padding: 60px 50px;
+    position: relative;
+}
+
+.left-side h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.left-side p {
+    color: rgba(255,255,255,.8);
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+.left-side img {
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}
+
+/* Right Side */
+
+.right-side {
+    padding: 60px 50px;
+}
+
+.login-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #2f2f2f;
+}
+
+.login-subtitle {
+    color: #6a6a6a;
+    margin-bottom: 35px;
+}
+
+/* Inputs */
+
+.input-group {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.input-group-text {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #3b5d50;
+    width: 48px;
+    justify-content: center;
+}
+
+.form-control {
+    height: 52px;
+    border-left: 0;
+}
+
+.form-control:focus {
+    border-color: #3b5d50;
+    box-shadow: none;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Checkbox */
+
+.form-check-input:checked {
+    background-color: #3b5d50;
+    border-color: #3b5d50;
+}
+
+/* Forgot Password */
+
+.forgot-link {
+    color: #3b5d50;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forgot-link:hover {
+    color: #2f4d43;
+}
+
+/* Register Link */
+
+.login-section p a {
+    color: #3b5d50;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-section p a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+
+.login-btn {
+    background: #3b5d50;
+    color: #fff;
+    border-radius: 10px;
+    padding: 13px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.login-btn:hover {
+    background: #2f4d43;
+    color: #fff;
+}
+
+/* Validation */
+
+.text-danger {
+    font-size: 14px;
+}
+
+/* Responsive */
+
+@media (max-width: 991px) {
+
+    .left-side {
+        text-align: center;
+        padding: 40px 30px;
+    }
+
+    .left-side img {
+        max-width: 260px;
+        margin-top: 20px;
+    }
+
+    .right-side {
+        padding: 40px 30px;
+    }
+
+    .login-title {
+        font-size: 28px;
+    }
+}

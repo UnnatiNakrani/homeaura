@@ -23,6 +23,19 @@ export const getLoggedInUserRole = () => {
   return getLoggedInUser()?.role || ROLES.USER;
 };
 
+// Save Logged In User
+export const setLoggedInUser = (user) => {
+  localStorage.setItem(
+    STORAGE_KEYS.USERS,
+    JSON.stringify(user)
+  );
+
+  localStorage.setItem(
+    STORAGE_KEYS.LOGIN_FLAG,
+    JSON.stringify(true)
+  );
+};
+
 // Logout
 export const authLogout = async () => {
   try {
