@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./layout/Sidebar";
-import Topbar from "./layout/Topbar";
 
 function AdminLayout() {
     return (
@@ -8,8 +7,6 @@ function AdminLayout() {
             <Sidebar />
 
             <div className="admin-content">
-                <Topbar />
-
                 <Outlet />
             </div>
         </div>

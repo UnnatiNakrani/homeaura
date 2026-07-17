@@ -1,6 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { authLogout } from "../../../helper/AuthHelper";
 
 function Sidebar() {
+
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await authLogout();
+        navigate("/login");
+    };
+
     return (
         <aside className="admin-sidebar">
 
@@ -51,6 +60,14 @@ function Sidebar() {
                         Settings
                     </NavLink>
                 </li>
+
+                <li>
+                    <NavLink to="/login" onClick={handleLogout}>
+                        <i className="bi bi-box-arrow-right"></i>
+                        Logout
+                    </NavLink>
+                </li>
+
 
             </ul>
         </aside>
