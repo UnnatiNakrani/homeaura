@@ -16,9 +16,12 @@ function ShopCard({ limit }) {
   const [loading, setLoading] = useState(true);
 
   const addToCart = async (product) => {
+    console.log("Add to Cart clicked", product);
+
     try {
 
       const user = auth.currentUser;
+      console.log("Current user:", user);
 
       if (!user) {
         toast.error("Please login first");
@@ -58,7 +61,7 @@ function ShopCard({ limit }) {
       toast.success("Product added to cart");
     } catch (error) {
       console.log(error);
-      toast.error("Cart error");
+      toast.error(error.message);
     }
   };
   useEffect(() => {

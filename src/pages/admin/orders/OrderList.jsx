@@ -4,78 +4,92 @@ import { db } from "../../../firebase";
 
 function OrderList() {
 
-  const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    getOrders();
-  }, []);
+    useEffect(() => {
+        getOrders();
+    }, []);
 
-  const getOrders = async () => {
-    const snapshot = await getDocs(collection(db, "orders"));
+    const getOrders = async () => {
+        const snapshot = await getDocs(collection(db, "orders"));
 
-    const data = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+        const data = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
 
-    setOrders(data);
-  };
+        setOrders(data);
+    };
 
-  return (
-    <div>
-      <table className="table table-bordered">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Products</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Payment</th>
-        </tr>
-    </thead>
+    return (
+        <div>
+            <table className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Products</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
 
-    <tbody>
+                <tbody>
 
-        {orders.map(order => (
+                    {orders.map(order => (
 
-            <tr key={order.id}>
+                        <tr key={order.id}>
 
-                <td>{order.id}</td>
+                            <td>{order.id}</td>
 
-                <td>
-                    {order.customer.firstName} {order.customer.lastName}
-                    <br />
-                    {order.customer.email}
-                </td>
+                            <td>
+                                {order.customer.firstName} {order.customer.lastName}
+                                <br />
+                                {order.customer.email}
+                            </td>
 
-                <td>
+                            <td>
 
-                    {order.products.map(product => (
+                                {order.products.map(product => (
 
-                        <div key={product.title}>
-                            {product.title} × {product.quantity}
-                        </div>
+                                    <div key={product.title}>
+                                        {product.title} × {product.quantity}
+                                    </div>
+
+                                ))}
+
+                            </td>
+
+                            <td>₹{order.total}</td>
+
+                            <td>{order.orderStatus}</td>
+
+                            <td>
+                                <span
+                                    style={{
+                                        backgroundColor:
+                                            order.paymentStatus === "Completed" ? "#198754" : "#dc3545",
+                                        color: "#fff",
+                                        padding: "6px 12px",
+                                        borderRadius: "20px",
+                                        fontSize: "13px",
+                                        fontWeight: "600",
+                                    }}
+                                >
+                                    {order.paymentStatus}
+                                </span>
+                            </td>
+
+                        </tr>
 
                     ))}
 
-                </td>
+                </tbody>
 
-                <td>₹{order.total}</td>
-
-                <td>{order.orderStatus}</td>
-
-                <td>{order.paymentStatus}</td>
-
-            </tr>
-
-        ))}
-
-    </tbody>
-
-</table>
-    </div>
-  );
+            </table>
+        </div>
+    );
 }
 
 export default OrderList;

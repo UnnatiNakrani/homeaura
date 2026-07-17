@@ -128,6 +128,7 @@ function CartTable() {
       </div>
     );
   }
+  
   return (
     <div className="untree_co-section before-footer-section">
       <div className="container">

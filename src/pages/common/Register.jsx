@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { ROLES } from '../../constant/CommonConstant';
 import { AUTH_ROUTE } from '../../constant/RoutesConstant';
 import { AUTH_MESSAGES } from "../../constant/MessageConstant";
@@ -57,7 +57,9 @@ function Register(props) {
                 }
                 console.log(payload, "payload");
 
-                const addUser = await addDoc(collection(db, "users"), payload)
+                const addUser = await setDoc(doc(db, "users", res.user.uid), {
+    ...payload,
+});
 
                 console.log(addUser, "add user");
 

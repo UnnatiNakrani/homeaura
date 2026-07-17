@@ -1,23 +1,30 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 function UserList() {
 
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john@gmail.com",
-            role: "Customer",
-            status: "Active"
-        },
-        {
-            id: 2,
-            name: "Emma Watson",
-            email: "emma@gmail.com",
-            role: "Customer",
-            status: "Inactive"
-        }
-    ];
+const [users, setUsers] = useState([]);
+useEffect(() => {
+    getUsers();
+}, []);
+
+const getUsers = async () => {
+    try {
+        const snapshot = await getDocs(collection(db, "users"));
+
+        const data = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        setUsers(data);
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
     return (
         <div className="admin-card">
@@ -53,14 +60,16 @@ function UserList() {
                                 <td>
                                     <div className="d-flex align-items-center">
                                         <img
-                                            src="https://via.placeholder.com/50"
-                                            alt=""
-                                            className="rounded-circle me-2"
-                                            width="40"
-                                            height="40"
-                                        />
-
-                                        {user.name}
+    src={
+        user.image ||
+        `https://ui-avatars.com/api/?name=${user.fname}+${user.lname}`
+    }
+    alt=""
+    className="rounded-circle me-2"
+    width="40"
+    height="40"
+/>
+{user.fname} {user.lname}
                                     </div>
                                 </td>
 
@@ -70,22 +79,23 @@ function UserList() {
 
                                 <td>
 
-                                    <span
-                                        className={
-                                            user.status === "Active"
-                                                ? "status status-success"
-                                                : "status status-danger"
-                                        }
-                                    >
-                                        {user.status}
-                                    </span>
+                                    
+<span
+    className={
+        user.isDeleted
+            ? "status status-danger"
+            : "status status-success"
+    }
+>
+    {user.isDeleted ? "Inactive" : "Active"}
+</span>                                    
 
                                 </td>
 
                                 <td>
 
                                     <Link
-                                        to={`/admin/users/${user.id}`}
+                                        to={`/users/${user.id}`}
                                         className="btn btn-admin btn-sm"
                                     >
                                         View

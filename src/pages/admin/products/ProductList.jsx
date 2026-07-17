@@ -32,19 +32,19 @@ function ProductList() {
   }, []);
 
   const handleDelete = async (id) => {
-  try {
-    await deleteDoc(doc(db, "products", id));
+    try {
+      await deleteDoc(doc(db, "products", id));
 
-    alert("Product deleted successfully.");
+      alert("Product deleted successfully.");
 
-    getProducts(); // Refresh the list
-    
+      getProducts(); // Refresh the list
 
-  } catch (error) {
-    console.log(error);
-    alert("Failed to delete product.");
-  }
-};
+
+    } catch (error) {
+      console.log(error);
+      alert("Failed to delete product.");
+    }
+  };
 
   return (
     <div className="admin-card">
@@ -100,9 +100,7 @@ function ProductList() {
             ) : (
 
               products.map((product) => (
-
                 <tr key={product.id}>
-
                   <td>
                     {product.image ? (
                       <img
@@ -126,7 +124,16 @@ function ProductList() {
 
                   <td>{product.title}</td>
 
-                  <td>{product.slug}</td>
+                  <td>
+                    <span
+                      title={product.slug}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {product.slug.length > 5
+                        ? product.slug.substring(0, 5) + "..."
+                        : product.slug}
+                    </span>
+                  </td>
 
                   <td>₹{product.price}</td>
 
@@ -143,27 +150,34 @@ function ProductList() {
                   <td>{product.stock}</td>
 
                   <td>
-                    {Array.isArray(product.tags)
-                      ? product.tags.join(", ")
-                      : product.tags}
+                    <span
+                      title={product.tags}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {product.tags.split(",").length > 2
+                        ? product.tags.split(",").slice(0, 2).join(", ") + "..."
+                        : product.tags}
+                    </span>
                   </td>
 
                   <td>
+                    <div className="d-flex align-items-center gap-2">
+                      <Link
+                        to={`/products/edit/${product.id}`}
+                        className="btn btn-sm btn-outline-primary"
+                        title="Edit"
+                      >
+                        <i className="bi bi-pencil-square"></i>
+                      </Link>
 
-                    <Link
-                      to={`/products/edit/${product.id}`}
-                      className="btn btn-warning btn-sm me-2"
-                    >
-                      Edit
-                    </Link>
-
-                    <button
-                      className="btn btn-danger btn-sm"
+                      <button
+                        className="btn btn-sm btn-outline-danger"
                         onClick={() => handleDelete(product.id)}
-                    >
-                      Delete
-                    </button>
-
+                        title="Delete"
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </div>
                   </td>
 
                 </tr>

@@ -46,21 +46,15 @@ function ProfileForm({
                             src={
                                 values.imagePreview ||
                                 values.image ||
-                                "https://ui-avatars.com/api/?name=" +
-                                encodeURIComponent(values.name || "User")
+                                `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                    `${values.fname || ""} ${values.lname || ""}`
+                                )}&background=3b5d50&color=fff&size=140`
                             }
                             alt="Profile"
                             className="rounded-circle border mb-3"
                             width="140"
                             height="140"
                             style={{ objectFit: "cover" }}
-                        />
-
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="form-control"
-                            onChange={handleImageChange}
                         />
 
                     </div>
@@ -70,22 +64,38 @@ function ProfileForm({
                         {/* Name */}
                         <div className="col-md-6 mb-3">
 
-                            <label className="form-label fw-bold">
-                                Full Name
-                            </label>
+                            <div className="row">
 
-                            <input
-                                type="text"
-                                name="name"
-                                className={`form-control ${touched.name && errors.name ? "is-invalid" : ""
-                                    }`}
-                                value={values.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label fw-bold">
+                                        First Name
+                                    </label>
 
-                            <div className="invalid-feedback">
-                                {errors.name}
+                                    <input
+                                        type="text"
+                                        name="fname"
+                                        className="form-control"
+                                        value={values.fname}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+
+                                <div className="col-md-6 mb-3">
+                                    <label className="form-label fw-bold">
+                                        Last Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="lname"
+                                        className="form-control"
+                                        value={values.lname}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+
                             </div>
 
                         </div>

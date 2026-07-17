@@ -5,7 +5,7 @@ import {
     doc,
     getDoc,
     updateDoc,
-    Timestamp,
+    Timestamp
 } from "firebase/firestore";
 import {
     ref,
@@ -23,7 +23,8 @@ function Profile() {
     const formik = useFormik({
 
         initialValues: {
-            name: "",
+            fname: "",
+            lname: "",
             email: "",
             mobile: "",
             gender: "",
@@ -39,20 +40,28 @@ function Profile() {
         },
 
         validationSchema: Yup.object({
+            fname: Yup.string().required("First name is required"),
 
-            name: Yup.string()
-                .required("Name is required"),
+            lname: Yup.string().required("Last name is required"),
 
             mobile: Yup.string()
+                .matches(/^[6-9]\d{9}$/, "Invalid mobile number")
                 .required("Mobile is required"),
 
-            address: Yup.string()
-                .required("Address is required"),
+            country: Yup.string().required("Country is required"),
 
+            state: Yup.string().required("State is required"),
+
+            city: Yup.string().required("City is required"),
+
+            address: Yup.string().required("Address is required"),
+
+            pincode: Yup.string()
+                .matches(/^\d{6}$/, "Pincode must be 6 digits")
+                .required("Pincode is required"),
         }),
 
         onSubmit: async (values) => {
-
             try {
 
                 let imageUrl = values.image;
@@ -67,36 +76,31 @@ function Profile() {
                     await uploadBytes(imageRef, values.imageFile);
 
                     imageUrl = await getDownloadURL(imageRef);
-
                 }
 
                 await updateDoc(
                     doc(db, "users", auth.currentUser.uid),
                     {
-
-                        name: values.name,
+                        fname: values.fname,
+                        lname: values.lname,
                         mobile: values.mobile,
                         gender: values.gender,
                         dob: values.dob,
                         address: values.address,
                         city: values.city,
                         state: values.state,
-                        pincode: values.pincode,
                         country: values.country,
+                        pincode: values.pincode,
                         image: imageUrl,
                         updatedAt: Timestamp.now(),
-
                     }
                 );
 
                 alert("Profile Updated Successfully");
 
             } catch (error) {
-
                 console.log(error);
-
             }
-
         },
 
     });
@@ -116,8 +120,8 @@ function Profile() {
                     const data = snap.data();
 
                     formik.setValues({
-
-                        name: data.name || "",
+                        fname: data.fname || "",
+                        lname: data.lname || "",
                         email: data.email || "",
                         mobile: data.mobile || "",
                         gender: data.gender || "",
@@ -130,21 +134,16 @@ function Profile() {
                         image: data.image || "",
                         imagePreview: data.image || "",
                         imageFile: null,
-
                     });
 
                 }
 
             } catch (error) {
-
                 console.log(error);
-
             }
 
             setLoading(false);
-
         };
-
         getProfile();
 
     }, []);
