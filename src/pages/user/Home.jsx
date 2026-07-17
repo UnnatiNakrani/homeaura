@@ -4,7 +4,6 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Hero from '../../components/common/Hero';
 import ShopCart from '../../components/user/ShopCart';
 import BlogSection from '../../components/user/Blog/BlogSection';
-import TestimonialSection from '../../components/user/Testimonial/TestimonialSection';
 import WhyChooseUs from '../../components/user/WhyChooseUs/WhyChooseUs';
 import CustomButton from '../../components/common/CustomButton';
 import ProductSection from '../../components/user/ProductSection';
@@ -109,10 +108,6 @@ function Home(props) {
                 </div>
             </div>
             {/* End Popular Product */}
-
-            {/* Start Testimonial Slider */}
-           <TestimonialSection />
-            {/* End Testimonial Slider */}
             
             {/* Start Blog Section */}
             <BlogSection limit={3} />            

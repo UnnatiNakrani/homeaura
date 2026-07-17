@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Hero from '../../components/common/Hero';
 import BlogSection from '../../components/user/Blog/BlogSection';
-import TestimonialSection from '../../components/user/Testimonial/TestimonialSection';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 
@@ -24,9 +23,7 @@ function Blog(props) {
             {/* Start Blog Section */}
             <BlogSection limit={9} />
             {/* End Blog Section */}
-            {/* Start Testimonial Slider */}
-            <TestimonialSection />
-            {/* End Testimonial Slider */}
+           
             <Footer />
         </div>
 
