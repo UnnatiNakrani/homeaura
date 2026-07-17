@@ -52,10 +52,10 @@ function CategoryList() {
   };
 
   return (
-      
+
     <div className="table-responsive">
 
-        <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
         <h3>Categories</h3>
 
         <Link
@@ -66,107 +66,90 @@ function CategoryList() {
         </Link>
       </div>
 
-  <table className="table table-hover align-middle">
+      <table className="table table-hover align-middle">
 
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Name</th>
-        <th>Slug</th>
-        <th>Parent Category</th>
-        <th>Description</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      {loading ? (
-
-        <tr>
-          <td colSpan="6" className="text-center">
-            Loading...
-          </td>
-        </tr>
-
-      ) : categories.length === 0 ? (
-
-        <tr>
-          <td colSpan="6" className="text-center">
-            No Categories Found
-          </td>
-        </tr>
-
-      ) : (
-
-        categories.map((category) => (
-
-          <tr key={category.id}>
-
-            <td>
-              {category.image ? (
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  width="60"
-                  height="60"
-                  style={{
-                    objectFit: "cover",
-                    borderRadius: "8px",
-                  }}
-                />
-              ) : (
-                "No Image"
-              )}
-            </td>
-
-            <td>{category.name}</td>
-
-            <td>{category.slug}</td>
-
-            <td>{category.parentId || "None"}</td>
-
-            <td
-              style={{
-                maxWidth: "250px",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {category.description}
-            </td>
-
-            <td>
-
-              <Link
-                to={`/categories/edit/${category.id}`}
-                className="btn btn-warning btn-sm me-2"
-              >
-                Edit
-              </Link>
-
-              <button
-                className="btn btn-danger btn-sm"
-                onClick={() => handleDelete(category.id)}
-              >
-                Delete
-              </button>
-
-            </td>
-
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Slug</th>
+            <th>Parent Category</th>
+            <th>Description</th>
+            <th>Action</th>
           </tr>
+        </thead>
 
-        ))
+        <tbody>
 
-      )}
+          {loading ? (
 
-    </tbody>
+            <tr>
+              <td colSpan="6" className="text-center">
+                Loading...
+              </td>
+            </tr>
 
-  </table>
+          ) : categories.length === 0 ? (
 
-</div>
-);
+            <tr>
+              <td colSpan="6" className="text-center">
+                No Categories Found
+              </td>
+            </tr>
+
+          ) : (
+
+            categories.map((category) => (
+
+              <tr key={category.id}>
+
+                <td>{category.name}</td>
+
+                <td>{category.slug}</td>
+
+                <td>{category.parentId || "None"}</td>
+
+                <td
+                  style={{
+                    maxWidth: "250px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {category.description}
+                </td>
+
+                <td>
+                  <div className="d-flex align-items-center gap-2">
+                    <Link
+                      to={`/products/edit/${category.id}`}
+                      className="btn btn-sm btn-outline-primary"
+                      title="Edit"
+                    >
+                      <i className="bi bi-pencil-square"></i>
+                    </Link>
+
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(category.id)}
+                      title="Delete"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+            ))
+
+          )}
+
+        </tbody>
+
+      </table>
+
+    </div>
+  );
 }
 
 export default CategoryList;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
+import React, { useEffect, useState } from 'react';
+import { addDoc, collection, getDocs, Timestamp } from "firebase/firestore";
 import { useFormik } from "formik";
 import { db } from "../../../firebase";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ function ProductCreate() {
 
   const [product, setProduct] = useState({});
   const [edit, setEdit] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate();
 
@@ -149,6 +150,25 @@ function ProductCreate() {
   })
   const handleImageChange = (e) => {
     formik.setFieldValue("images", e.target.files[0]);
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
+  const getCategories = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "categories"));
+
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setCategories(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { handleChange, handleSubmit, handleBlur, values, touched, errors } = formik;
@@ -308,10 +328,15 @@ function ProductCreate() {
             onChange={handleChange}
           >
             <option value="">Select Category</option>
-            <option value="living-room">Living Room</option>
-            <option value="bedroom">Bedroom</option>
-            <option value="office">Office</option>
-            <option value="dining">Dining</option>
+
+            {categories.map((category) => (
+              <option
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            ))}
           </select>
           {touched.categoryId && errors.categoryId && (
             <small className="text-danger">
