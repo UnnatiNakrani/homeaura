@@ -1,4 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+    doc,
+    getDoc,
+    setDoc,
+    Timestamp
+} from "firebase/firestore";
+import { toast } from "react-toastify";
+import { db } from "../../../firebase";
 
 function SiteSettings() {
     const [settings, setSettings] = useState({
@@ -6,12 +14,32 @@ function SiteSettings() {
         email: "info@homeaura.com",
         phone: "+91 9876543210",
         address: "Surat, Gujarat, India",
-        facebook: "",
-        instagram: "",
-        twitter: "",
         metaTitle: "",
         metaDescription: ""
     });
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
+    useEffect(() => {
+        getSettings();
+    }, []);
+
+    const getSettings = async () => {
+        try {
+            const docRef = doc(db, "settings", "site");
+
+            const snapshot = await getDoc(docRef);
+
+            if (snapshot.exists()) {
+                setSettings(snapshot.data());
+            }
+
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleChange = (e) => {
         setSettings({
@@ -20,13 +48,44 @@ function SiteSettings() {
         });
     };
 
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(settings);
+        try {
 
-        alert("Settings Saved Successfully!");
+            setSaving(true);
+
+            await setDoc(
+                doc(db, "settings", "site"),
+                {
+                    ...settings,
+                    updatedAt: Timestamp.now(),
+                }
+            );
+
+            toast.success("Settings Saved Successfully");
+
+        } catch (error) {
+
+            console.log(error);
+
+            toast.error("Something went wrong");
+
+        } finally {
+
+            setSaving(false);
+
+        }
     };
+
+    if (loading) {
+        return (
+            <div className="container text-center py-5">
+                <h4>Loading Settings...</h4>
+            </div>
+        );
+    }
 
     return (
         <div className="container-fluid">
@@ -42,7 +101,7 @@ function SiteSettings() {
                 <div className="row">
 
                     {/* General Settings */}
-                    <div className="col-lg-6 mb-4">
+                    <div className=" mb-4">
 
                         <div className="admin-card">
 
@@ -110,55 +169,6 @@ function SiteSettings() {
 
                     </div>
 
-                    {/* Social Links */}
-                    <div className="col-lg-6 mb-4">
-
-                        <div className="admin-card">
-
-                            <h5 className="mb-4">
-                                Social Media
-                            </h5>
-
-                            <div className="mb-3">
-                                <label>Facebook</label>
-
-                                <input
-                                    type="text"
-                                    name="facebook"
-                                    className="form-control"
-                                    value={settings.facebook}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div className="mb-3">
-                                <label>Instagram</label>
-
-                                <input
-                                    type="text"
-                                    name="instagram"
-                                    className="form-control"
-                                    value={settings.instagram}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div className="mb-3">
-                                <label>Twitter</label>
-
-                                <input
-                                    type="text"
-                                    name="twitter"
-                                    className="form-control"
-                                    value={settings.twitter}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                        </div>
-
-                    </div>
-
                     {/* SEO Settings */}
                     <div className="col-12 mb-4">
 
@@ -201,10 +211,10 @@ function SiteSettings() {
                 <button
                     type="submit"
                     className="btn btn-admin"
+                    disabled={saving}
                 >
-                    Save Settings
+                    {saving ? "Saving..." : "Save Settings"}
                 </button>
-
             </form>
 
         </div>

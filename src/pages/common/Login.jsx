@@ -18,6 +18,7 @@ function Login(props) {
     const navigate = useNavigate();
 
     const [user, setUser] = useState([]);
+        const [login, setLogin] = useState(false);
 
     const validationSchema = Yup.object({
         email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,8 +48,8 @@ function Login(props) {
 
                 console.log("Auth UID:", res.user.uid);
 
-console.log("Logged in email:", res.user.email);
-console.log("Logged in uid:", res.user.uid);
+                console.log("Logged in email:", res.user.email);
+                console.log("Logged in uid:", res.user.uid);
 
                 const loginUser = userMap.find(
                     (user) => user.uid === res.user.uid
@@ -247,8 +248,9 @@ console.log("Logged in uid:", res.user.uid);
                                         <button
                                             type="submit"
                                             className="btn login-btn w-100 mb-4"
+                                            disabled={login}
                                         >
-                                            Login Now
+                                            {login ? "login.." : "Login Now"}
                                         </button>
 
                                         <div className="text-center my-3">
