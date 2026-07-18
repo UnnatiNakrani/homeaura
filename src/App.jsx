@@ -10,7 +10,6 @@ import PrivateRoute from './rotues/PrivateRoute';
 import { ROLES } from './constant/CommonConstant';
 import Shop from './pages/user/Shop';
 import Services from './pages/user/Services';
-import Blog from './pages/user/Blog';
 import Contact from './pages/user/Contact';
 import Cart from './pages/user/Cart';
 import Thankyou from './pages/user/Thankyou';
@@ -31,6 +30,11 @@ import Profile from './pages/user/Profile';
 import Checkout from './pages/user/Checkout';
 import ContactList from './pages/admin/contact/ContactList';
 import SiteSettings from './pages/admin/setting/SiteSettings';
+import Blog from './pages/user/Blog';
+import BlogManager from './pages/admin/blogs/BlogManager';
+import BlogCreate from './pages/admin/blogs/Blogcreate';
+import BlogEdit from './pages/admin/blogs/BlogEdit';
+import BlogDetails from './pages/user/BlogDetails';
 
 function App(props) {
   useEffect(() => {
@@ -71,10 +75,15 @@ function App(props) {
           <Route path="orders" element={<OrderList />} />
           <Route path="orders/:id" element={<OrderDetail />} />
 
+          <Route path="/blogs" element={<BlogManager />} />
+          <Route path="/blogs/create" element={<BlogCreate />} />
+          <Route path="/blogs/edit/:id" element={<BlogEdit />} />
+          <Route path="/blog/:slug" element={<BlogDetails />} />
+
           <Route path="users" element={<UserList />} />
           <Route path="users/:id" element={<UserDetail />} />
 
-         <Route path="/contact" element={<ContactList />} />
+          <Route path="/contact" element={<ContactList />} />
           <Route path="settings" element={<SiteSettings />} />
         </Route>
       </Route>

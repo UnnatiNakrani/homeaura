@@ -1,32 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Hero from '../../components/common/Hero';
-import BlogSection from '../../components/user/Blog/BlogSection';
-import Header from '../../components/common/Header';
-import Footer from '../../components/common/Footer';
+import React, { useEffect, useState } from "react";
+import Header from "../../components/common/Header";
+import Footer from "../../components/common/Footer";
+import Hero from "../../components/common/Hero";
+import BlogSection from "../../components/user/Blog/BlogSection";
 
-function Blog(props) {
+function Blog() {
+
     return (
-        <div>
+        <>
             <Header />
-            {/* Start Hero Section */}
+
             <Hero
                 title="Blog"
-            description="Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate."
+                description="Read our latest articles, furniture trends, and interior design ideas."
                 primaryBtnText="Shop Now"
                 primaryBtnLink="/shop"
                 secondaryBtnText="Explore"
                 secondaryBtnLink="/about"
                 image="/assets/images/couch.png"
             />
-            {/* End Hero Section */}
-            {/* Start Blog Section */}
-            <BlogSection limit={9} />
-            {/* End Blog Section */}
-           
-            <Footer />
-        </div>
 
+            <BlogSection />
+            <Footer />
+        </>
     );
 }
 

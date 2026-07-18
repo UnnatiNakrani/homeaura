@@ -48,6 +48,13 @@ function Sidebar() {
                 </li>
 
                 <li>
+                    <NavLink to="/blogs">
+                        <i className="bi bi-journal-text"></i>
+                        Blogs
+                    </NavLink>
+                </li>
+
+                <li>
                     <NavLink to="/users">
                         <i className="bi bi-people"></i>
                         Users

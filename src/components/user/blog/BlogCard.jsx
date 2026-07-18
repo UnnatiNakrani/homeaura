@@ -1,32 +1,72 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 function BlogCard({ blog }) {
-  return (
-    <div className="col-12 col-sm-6 col-md-4 mb-5">
-      <div className="post-entry">
-        <a href="#" className="post-thumbnail">
-          <img
-            src={blog.image}
-            alt={blog.title}
-            className="img-fluid"
-          />
-        </a>
+    return (
+        <div className="post-entry h-100">
 
-        <div className="post-content-entry">
-          <h3>
-            <a href="#">{blog.title}</a>
-          </h3>
+            {/* Blog Image */}
+            <Link
+                to={`/blog/${blog.slug}`}
+                className="post-thumbnail d-block"
+            >
+                <img
+                    src={blog.image}
+                    alt={blog.title}
+                    className="img-fluid rounded"
+                    style={{
+                        width: "100%",
+                        height: "250px",
+                        objectFit: "cover",
+                    }}
+                />
+            </Link>
 
-          <div className="meta">
-            <span>
-              by <a href="#">{blog.author}</a>
-            </span>{" "}
-            <span>
-              on <a href="#">{blog.date}</a>
-            </span>
-          </div>
+            {/* Blog Content */}
+            <div className="post-content-entry mt-3">
+
+                <h3>
+                    <Link
+                        to={`/blog/${blog.slug}`}
+                        className="text-decoration-none text-dark"
+                    >
+                        {blog.title}
+                    </Link>
+                </h3>
+
+                <p className="text-muted">
+                    {blog.description}
+                </p>
+
+                <div className="meta mb-3">
+
+                    <span>
+                        By <strong>{blog.author}</strong>
+                    </span>
+
+                    <br />
+
+                    <span>
+                        {blog.createdAt?.seconds
+                            ? new Date(
+                                  blog.createdAt.seconds * 1000
+                              ).toLocaleDateString()
+                            : ""}
+                    </span>
+
+                </div>
+
+                <Link
+                    to={`/blog/${blog.slug}`}
+                    className="btn btn-success btn-sm"
+                >
+                    Read More
+                </Link>
+
+            </div>
+
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default BlogCard;

@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Hero from '../../components/common/Hero';
 import ShopCart from '../../components/user/ShopCart';
-import BlogSection from '../../components/user/Blog/BlogSection';
 import WhyChooseUs from '../../components/user/WhyChooseUs/WhyChooseUs';
 import CustomButton from '../../components/common/CustomButton';
 import ProductSection from '../../components/user/ProductSection';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
+import BlogSection from '../../components/user/Blog/BlogSection';
 
 function Home(props) {
     return (
@@ -110,7 +110,7 @@ function Home(props) {
             {/* End Popular Product */}
             
             {/* Start Blog Section */}
-            <BlogSection limit={3} />            
+            <BlogSection limit={3} />
             {/* End Blog Section */}
 
             <Footer />

@@ -1,81 +1,76 @@
+import React, { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+
+import { db } from "../../../firebase";
 import BlogCard from "./BlogCard";
 
 function BlogSection({ limit }) {
-  const blogs = [
-    {
-      id: 1,
-      image: "/assets/images/post-1.jpg",
-      title: "First Time Home Owner Ideas",
-      author: "Kristin Watson",
-      date: "Dec 19, 2021",
-    },
-    {
-      id: 2,
-      image: "/assets/images/post-2.jpg",
-      title: "How To Keep Your Furniture Clean",
-      author: "Robert Fox",
-      date: "Dec 15, 2021",
-    },
-    {
-      id: 3,
-      image: "/assets/images/post-3.jpg",
-      title: "Small Space Furniture Apartment Ideas",
-      author: "Kristin Watson",
-      date: "Dec 12, 2021",
-    },
-    {
-      id: 4,
-      image: "/assets/images/post-1.jpg",
-      title: "Modern Furniture Trends",
-      author: "John Smith",
-      date: "Jan 10, 2022",
-    },
-    {
-      id: 5,
-      image: "/assets/images/post-2.jpg",
-      title: "Best Living Room Designs",
-      author: "Emma Watson",
-      date: "Jan 15, 2022",
-    },
-    {
-      id: 6,
-      image: "/assets/images/post-3.jpg",
-      title: "Furniture Care Guide",
-      author: "Robert Fox",
-      date: "Jan 20, 2022",
-    },
-    {
-      id: 7,
-      image: "/assets/images/post-1.jpg",
-      title: "Wooden Chair Collection",
-      author: "David Miller",
-      date: "Jan 25, 2022",
-    },
-    {
-      id: 8,
-      image: "/assets/images/post-2.jpg",
-      title: "Home Decoration Ideas",
-      author: "Sophia Lee",
-      date: "Feb 01, 2022",
-    },
-    {
-      id: 9,
-      image: "/assets/images/post-3.jpg",
-      title: "Furniture Care Guide",
-      author: "Robert Fox",
-      date: "Jan 20, 2022",
-    }
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const displayBlogs = limit ? blogs.slice(0, limit) : blogs;
+  useEffect(() => {
+    getBlogs();
+  }, []);
+
+const getBlogs = async () => {
+  try {
+    setLoading(true);
+
+    const snapshot = await getDocs(collection(db, "blogs"));
+
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    console.log("Blogs:", data);
+
+    setBlogs(data);
+  } catch (error) {
+    console.error("Firestore Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>Loading...</h4>
+      </div>
+    );
+  }
+
+  const displayBlogs = limit
+    ? blogs.slice(0, limit)
+    : blogs;
 
   return (
-    <div className="blog-section">
+    <div className="blog-section py-5">
       <div className="container">
         <div className="row">
-          {displayBlogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
-          ))}
+
+          {displayBlogs.length === 0 ? (
+            <div className="col-12 text-center">
+              <h4>No Blogs Found</h4>
+            </div>
+          ) : (
+            displayBlogs.map((blog) => (
+              <div
+                className="col-md-6 col-lg-4 mb-5"
+                key={blog.id}
+              >
+                <BlogCard blog={blog} />
+              </div>
+            ))
+          )}
+
         </div>
       </div>
     </div>
