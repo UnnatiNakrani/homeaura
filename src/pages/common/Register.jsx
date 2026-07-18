@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from '../../firebase';
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 function Register(props) {
 
     const Navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const validationSchema = Yup.object({
         fname: Yup.string().min(2, "Minimum 2 characters").required("First name is required"),
@@ -38,6 +39,8 @@ function Register(props) {
         validateOnBlur: true,
         onSubmit: async (values, { resetForm }) => {
             try {
+                setLoading(true);
+
                 // Create user in Firebase Auth
                 const res = await createUserWithEmailAndPassword(
                     auth,
@@ -58,8 +61,8 @@ function Register(props) {
                 console.log(payload, "payload");
 
                 const addUser = await setDoc(doc(db, "users", res.user.uid), {
-    ...payload,
-});
+                    ...payload,
+                });
 
                 console.log(addUser, "add user");
 
@@ -90,6 +93,8 @@ function Register(props) {
                         toast.error(AUTH_MESSAGES.UNKNOWN_ERROR);
                         break;
                 }
+            } finally {
+                setLoading(false);
             }
         }
     })
@@ -326,8 +331,19 @@ function Register(props) {
                                         <button
                                             type="submit"
                                             className="btn login-btn w-100"
+                                            disabled={loading}
                                         >
-                                            Create Account
+                                            {loading ? (
+                                                <>
+                                                    <span
+                                                        className="spinner-border spinner-border-sm me-2"
+                                                        role="status"
+                                                    />
+                                                    Sign up...
+                                                </>
+                                            ) : (
+                                                "Create Account"
+                                            )}
                                         </button>
 
                                         <p className="text-center mt-4">

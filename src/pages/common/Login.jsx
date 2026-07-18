@@ -18,7 +18,8 @@ function Login(props) {
     const navigate = useNavigate();
 
     const [user, setUser] = useState([]);
-        const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const validationSchema = Yup.object({
         email: Yup.string().email("Invalid email").required("Email is required"),
@@ -35,6 +36,8 @@ function Login(props) {
         onSubmit: async (values, { resetForm }) => {
 
             try {
+                setLoading(true);
+
                 const res = await signInWithEmailAndPassword(
                     auth,
                     values.email,
@@ -102,6 +105,8 @@ function Login(props) {
                 }
 
                 console.log(error);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -193,16 +198,40 @@ function Login(props) {
                                                     value={values.email}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    className={`form-control ${touched.email ? "is-invalid" : ""}`}
-                                                    placeholder="Enter Email"
+                                                    className={`form-control ${touched.email
+                                                        ? errors.email
+                                                            ? "is-invalid"
+                                                            : "is-valid"
+                                                        : ""
+                                                        }`}
                                                 />
                                             </div>
 
-                                            {touched.email && errors.email && (
-                                                <div className="text-danger mt-1">
-                                                    {errors.email}
-                                                </div>
+                                            {touched.email && !errors.email && (
+                                                <i
+                                                    className="bi bi-check-circle-fill text-success position-absolute"
+                                                    style={{
+                                                        right: "15px",
+                                                        top: "43px",
+                                                        fontSize: "18px",
+                                                    }}
+                                                ></i>
                                             )}
+
+                                            {touched.email && errors.email && (
+                                                <i
+                                                    className="bi bi-x-circle-fill text-danger position-absolute"
+                                                    style={{
+                                                        right: "15px",
+                                                        top: "43px",
+                                                        fontSize: "18px",
+                                                    }}
+                                                ></i>
+                                            )}
+
+                                            <small className="text-danger">
+                                                {touched.email && errors.email}
+                                            </small>
                                         </div>
 
                                         <div className="mb-3">
@@ -216,16 +245,41 @@ function Login(props) {
                                                     value={values.password}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    className={`form-control ${touched.password ? "is-invalid" : ""}`}
-                                                    placeholder="Enter Password"
+                                                    className={`form-control ${touched.password
+                                                            ? errors.password
+                                                                ? "is-invalid"
+                                                                : "is-valid"
+                                                            : ""
+                                                        }`}
                                                 />
                                             </div>
 
-                                            {touched.password && errors.password && (
-                                                <div className="text-danger mt-1">
-                                                    {errors.password}
-                                                </div>
+                                            {touched.password && !errors.password && (
+                                                <i
+                                                    className="bi bi-check-circle-fill text-success position-absolute"
+                                                    style={{
+                                                        right: "15px",
+                                                        top: "43px",
+                                                        fontSize: "18px",
+                                                    }}
+                                                ></i>
                                             )}
+
+                                            {touched.password && errors.password && (
+                                                <i
+                                                    className="bi bi-x-circle-fill text-danger position-absolute"
+                                                    style={{
+                                                        right: "15px",
+                                                        top: "43px",
+                                                        fontSize: "18px",
+                                                    }}
+                                                ></i>
+                                            )}
+
+                                            <small className="text-danger">
+                                                {touched.password && errors.password}
+                                            </small>
+
                                         </div>
 
                                         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -247,10 +301,20 @@ function Login(props) {
                                         </p>
                                         <button
                                             type="submit"
-                                            className="btn login-btn w-100 mb-4"
-                                            disabled={login}
+                                            className="btn login-btn w-100"
+                                            disabled={loading}
                                         >
-                                            {login ? "login.." : "Login Now"}
+                                            {loading ? (
+                                                <>
+                                                    <span
+                                                        className="spinner-border spinner-border-sm me-2"
+                                                        role="status"
+                                                    />
+                                                    Logging in...
+                                                </>
+                                            ) : (
+                                                "Login"
+                                            )}
                                         </button>
 
                                         <div className="text-center my-3">
