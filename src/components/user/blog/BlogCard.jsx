@@ -34,18 +34,12 @@ function BlogCard({ blog }) {
                     </Link>
                 </h3>
 
-                <p className="text-muted">
-                    {blog.description}
-                </p>
-
                 <div className="meta mb-3">
 
                     <span>
                         By <strong>{blog.author}</strong>
                     </span>
-
-                    <br />
-
+                    <span> on </span>
                     <span>
                         {blog.createdAt?.seconds
                             ? new Date(
