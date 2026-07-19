@@ -62,6 +62,12 @@ function Sidebar() {
                 </li>
 
                 <li>
+                    <NavLink to="/inquiries">
+                        Contact
+                    </NavLink>
+                </li>
+
+                <li>
                     <NavLink to="/settings">
                         <i className="bi bi-gear"></i>
                         Settings

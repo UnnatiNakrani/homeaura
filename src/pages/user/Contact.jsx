@@ -39,10 +39,11 @@ function Contact(props) {
 
         onSubmit: async (values, { resetForm }) => {
             try {
-                await addDoc(collection(db, "contacts"), {
-                    ...values,
-                    createdAt: serverTimestamp(),
-                });
+                await addDoc(collection(db, "inquiries"), {
+  type: "contact",
+  ...values,
+  createdAt: serverTimestamp(),
+});
 
                 toast.success("Message Sent Successfully");
 
@@ -129,7 +130,7 @@ function Contact(props) {
                                                 />
 
                                                 {formik.touched.fname && formik.errors.fname && (
-                                                    <small className="text-danger">
+                                                    <small style={{ color: "red" }}>
                                                         {formik.errors.fname}
                                                     </small>
                                                 )}
@@ -149,7 +150,7 @@ function Contact(props) {
                                                 />
 
                                                 {formik.touched.lname && formik.errors.lname && (
-                                                    <small className="text-danger">
+                                                    <small style={{ color: "red" }}>
                                                         {formik.errors.lname}
                                                     </small>
                                                 )}
@@ -169,7 +170,7 @@ function Contact(props) {
                                         />
 
                                         {formik.touched.email && formik.errors.email && (
-                                            <small className="text-danger">
+                                                    <small style={{ color: "red" }}>
                                                 {formik.errors.email}
                                             </small>
                                         )}
@@ -187,7 +188,7 @@ function Contact(props) {
                                         />
 
                                         {formik.touched.message && formik.errors.message && (
-                                            <small className="text-danger">
+                                                    <small style={{ color: "red" }}>
                                                 {formik.errors.message}
                                             </small>
                                         )}

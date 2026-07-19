@@ -35,6 +35,7 @@ import BlogManager from './pages/admin/blogs/BlogManager';
 import BlogCreate from './pages/admin/blogs/Blogcreate';
 import BlogEdit from './pages/admin/blogs/BlogEdit';
 import BlogDetails from './pages/user/BlogDetails';
+import InquiryList from './pages/admin/InquiryList';
 
 function App(props) {
   useEffect(() => {
@@ -85,6 +86,8 @@ function App(props) {
 
           <Route path="/contact" element={<ContactList />} />
           <Route path="settings" element={<SiteSettings />} />
+
+          <Route path="/inquiries" element={<InquiryList />} />
         </Route>
       </Route>
     </Routes>

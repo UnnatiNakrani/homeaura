@@ -1,7 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+ import { useFormik } from "formik";
+import * as Yup from "yup";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 function Footer(props) {
+   
+const formik = useFormik({
+  initialValues: {
+    name: "",
+    email: "",
+  },
+
+  validationSchema: Yup.object({
+    name: Yup.string()
+      .min(2, "Minimum 2 characters")
+      .required("Name is required"),
+
+    email: Yup.string()
+      .email("Invalid Email")
+      .required("Email is required"),
+  }),
+
+  onSubmit: async (values, { resetForm }) => {
+    try {
+      await addDoc(collection(db, "inquiries"), {
+  type: "subscriber",
+  name: values.name,
+  email: values.email,
+  createdAt: serverTimestamp(),
+});
+
+      toast.success("Subscribed Successfully");
+      resetForm();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+  },
+});
+
     return (
         <div>
             {/* Start Footer Section */}
@@ -14,18 +53,46 @@ function Footer(props) {
                         <div className="col-lg-8">
                             <div className="subscription-form">
                                 <h3 className="d-flex align-items-center"><span className="me-1"><img src="../assets/images/envelope-outline.svg" alt="Image" className="img-fluid" /></span><span>Subscribe to Newsletter</span></h3>
-                                <form action="#" className="row g-3">
+<form onSubmit={formik.handleSubmit} className="row g-3">
+                                        <div className="col-auto">
+  <input
+    type="text"
+    className="form-control"
+    placeholder="Enter your name"
+    name="name"
+    value={formik.values.name}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+  />
+
+  {formik.touched.name && formik.errors.name && (
+    <small className="text-danger">
+      {formik.errors.name}
+    </small>
+  )}
+</div>
+                                   <div className="col-auto">
+  <input
+    type="email"
+    className="form-control"
+    placeholder="Enter your email"
+    name="email"
+    value={formik.values.email}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+  />
+
+  {formik.touched.email && formik.errors.email && (
+    <small className="text-danger">
+      {formik.errors.email}
+    </small>
+  )}
+</div>
                                     <div className="col-auto">
-                                        <input type="text" className="form-control" placeholder="Enter your name" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <input type="email" className="form-control" placeholder="Enter your email" />
-                                    </div>
-                                    <div className="col-auto">
-                                        <button className="btn btn-primary">
-                                            <span className="fa fa-paper-plane" />
-                                        </button>
-                                    </div>
+  <button type="submit" className="btn btn-primary">
+    <span className="fa fa-paper-plane"></span>
+  </button>
+</div>
                                 </form>
                             </div>
                         </div>
