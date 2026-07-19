@@ -81,7 +81,7 @@ function BlogList() {
 
           <table className="table table-bordered table-hover align-middle">
 
-            <thead className="table-dark">
+            <thead>
               <tr>
                 <th>Image</th>
                 <th>Title</th>
@@ -117,24 +117,19 @@ function BlogList() {
                   <td>{blog.category}</td>
 
                   <td>{blog.author}</td>
-
                   <td>
                     <span
-                      className={`badge ${
-                        blog.status === "Published"
-                          ? "bg-success"
-                          : "bg-warning text-dark"
-                      }`}
+                      className="badge"
+                      style={{ backgroundColor: "green", color: "white" }}
                     >
                       {blog.status}
                     </span>
                   </td>
-
                   <td>
                     {blog.createdAt?.seconds
                       ? new Date(
-                          blog.createdAt.seconds * 1000
-                        ).toLocaleDateString()
+                        blog.createdAt.seconds * 1000
+                      ).toLocaleDateString()
                       : "-"}
                   </td>
 
@@ -142,23 +137,26 @@ function BlogList() {
 
                     <Link
                       to={`/blog/${blog.slug}`}
-                      className="btn btn-info btn-sm me-2"
+                      className="btn btn-sm btn-outline-primary"
                     >
                       View
                     </Link>
 
                     <Link
-                      to={`/blogs/edit/${blog.id}`}
-                      className="btn btn-warning btn-sm me-2"
+                      to={`/products/edit/${blog.id}`}
+                      className="btn btn-sm btn-outline-primary"
+                      title="Edit"
                     >
-                      Edit
+                      <i className="bi bi-pencil-square"></i>
                     </Link>
 
+
                     <button
+                      className="btn btn-sm btn-outline-danger"
                       onClick={() => handleDelete(blog.id)}
-                      className="btn btn-danger btn-sm"
+                      title="Delete"
                     >
-                      Delete
+                      <i className="bi bi-trash"></i>
                     </button>
 
                   </td>

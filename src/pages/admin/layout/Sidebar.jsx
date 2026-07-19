@@ -63,6 +63,7 @@ function Sidebar() {
 
                 <li>
                     <NavLink to="/inquiries">
+                    <i className="bi bi-envelope"></i>
                         Contact
                     </NavLink>
                 </li>

@@ -5,26 +5,26 @@ import { db } from "../../../firebase";
 
 function UserList() {
 
-const [users, setUsers] = useState([]);
-useEffect(() => {
-    getUsers();
-}, []);
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        getUsers();
+    }, []);
 
-const getUsers = async () => {
-    try {
-        const snapshot = await getDocs(collection(db, "users"));
+    const getUsers = async () => {
+        try {
+            const snapshot = await getDocs(collection(db, "users"));
 
-        const data = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
+            const data = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
 
-        setUsers(data);
+            setUsers(data);
 
-    } catch (error) {
-        console.log(error);
-    }
-};
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="admin-card">
@@ -60,16 +60,16 @@ const getUsers = async () => {
                                 <td>
                                     <div className="d-flex align-items-center">
                                         <img
-    src={
-        user.image ||
-        `https://ui-avatars.com/api/?name=${user.fname}+${user.lname}`
-    }
-    alt=""
-    className="rounded-circle me-2"
-    width="40"
-    height="40"
-/>
-{user.fname} {user.lname}
+                                            src={
+                                                user.image ||
+                                                `https://ui-avatars.com/api/?name=${user.fname}+${user.lname}`
+                                            }
+                                            alt=""
+                                            className="rounded-circle me-2"
+                                            width="40"
+                                            height="40"
+                                        />
+                                        {user.fname} {user.lname}
                                     </div>
                                 </td>
 
@@ -78,17 +78,15 @@ const getUsers = async () => {
                                 <td>{user.role}</td>
 
                                 <td>
-
-                                    
-<span
-    className={
-        user.isDeleted
-            ? "status status-danger"
-            : "status status-success"
-    }
->
-    {user.isDeleted ? "Inactive" : "Active"}
-</span>                                    
+                                    <span
+                                        className={
+                                            user.isDeleted
+                                                ? "status status-danger"
+                                                : "status status-success"
+                                        }
+                                    >
+                                        {user.isDeleted ? "Inactive" : "Active"}
+                                    </span>
 
                                 </td>
 
